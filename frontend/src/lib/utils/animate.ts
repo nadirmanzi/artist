@@ -1,8 +1,10 @@
+import { browser } from '$app/environment';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Register the ScrollTrigger plugin with GSAP
-gsap.registerPlugin(ScrollTrigger);
+if (browser) {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 type GSAPTween = gsap.core.Tween;
 
