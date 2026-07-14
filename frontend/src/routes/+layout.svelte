@@ -3,6 +3,7 @@
 	import { onNavigate } from '$app/navigation';
 	import '../app.css';
 
+
 	let { children } = $props();
 
 	onNavigate((navigation) => {
