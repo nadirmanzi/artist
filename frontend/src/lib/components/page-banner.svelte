@@ -1,5 +1,12 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { animate } from '$lib/utils/animate';
+
+	let animation;
+
+	if (browser) {
+		animation = animate;
+	}
 
 	let { text, image }: { text: string; image: string } = $props();
 
@@ -12,7 +19,7 @@
 			src={image}
 			alt={text}
 			class="h-full w-full object-cover will-change-transform"
-			use:animate={[
+			use:animation={[
 				{
 					type: 'to',
 					scale: 1.5,
@@ -37,7 +44,7 @@
 			{#each words as word, index (word + index)}
 				<span
 					class="inline-block will-change-transform"
-					use:animate={[
+					use:animation={[
 						{
 							type: 'from',
 							y: 40,
@@ -46,7 +53,7 @@
 							filter: 'blur(6px)',
 							duration: 1,
 							delay: index * 0.045,
-							ease: 'power4.out',
+							ease: 'power4.out'
 						}
 					]}
 				>
@@ -57,5 +64,4 @@
 	</div>
 
 	<!-- Eased bottom fade container -->
-
 </div>
