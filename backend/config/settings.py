@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "users",
     "catalog",
+    "inquiries",
+    "classes_app",
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
@@ -189,7 +191,7 @@ REST_FRAMEWORK = {
         "user": "200/min",
         "login": "5/min",
         "register": "5/hour",
-        "inquiry": "5/hour",
+        "inquiry": "10/hour",
     },
 }
 

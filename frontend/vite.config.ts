@@ -18,7 +18,12 @@ export default defineConfig({
 				fallback: undefined,
 				precompress: false,
 				strict: true
-			})
-		})
-	]
+			}),
+		}),
+
+	],
+	server: {
+		allowedHosts: ['75e3-41-173-252-252.ngrok-free.app'],
+
+	}
 });

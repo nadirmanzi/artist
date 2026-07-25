@@ -2,6 +2,7 @@
 @import '@fontsource-variable/inter/wght.css';
 
 @import '@fontsource-variable/playfair-display/wght.css';
+@import '@fontsource-variable/eb-garamond/wght.css';
 
 @theme {
 	/* PRIMARY — Electric Blue #0066ff */
@@ -15,8 +16,8 @@
 	--color-on-primary-tonal: oklch(35% 0.15 260);
 
 	/* SECONDARY — Vivid Orange #ff6600 */
-	--color-secondary: oklch(67% 0.22 45);
-	--color-secondary-hover: oklch(60% 0.22 45);
+	--color-secondary: oklch(70% 0.2 85);
+	--color-secondary-hover: oklch(63% 0.2 85);
 	--color-on-secondary: oklch(100% 0 0);
 
 	/* Secondary Tonal */
@@ -66,11 +67,11 @@
 	--color-nav-dropdown-bg: oklch(100% 0 0 / 0.85);
 
 	/* FONTS */
-	--font-display: 'Playfair Display Variable', serif;
+	--font-display: 'EB Garamond Variable', serif;
 }
 
 body {
-	font-family: 'Inter Variable', sans-serif;
+	font-family: 'EB Garamond Variable', serif;
 	font-size: 1.05rem;
 	user-select: none;
 }

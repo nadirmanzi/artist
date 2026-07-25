@@ -2,9 +2,17 @@
 	import MainNavigation from '$lib/components/main-navigation.svelte';
 	import { onNavigate } from '$app/navigation';
 	import '../app.css';
+	import { setAuth, revokeAuth } from '$lib/client/state/auth.svelte';
 
+	let { data, children } = $props();
 
-	let { children } = $props();
+	$effect(() => {
+		if (data.is_authenticated && data.user) {
+			setAuth(data.user);
+		} else {
+			revokeAuth();
+		}
+	});
 
 	onNavigate((navigation) => {
 		// If the user clicked a link to the exact same pathname,
@@ -25,13 +33,11 @@
 
 <header
 	class="fixed w-screen z-[999] lg:p-4 flex items-center justify-center"
-	style="view-transition-name: main-navigation;"
 >
 	<MainNavigation />
-
 </header>
 
-<main class="text-foreground w-screen min-h-dvh bg-background" id='main-container'>
+<main class="text-foreground max-w-screen min-h-dvh bg-background" id="main-container">
 	{@render children()}
 </main>
 
@@ -46,7 +52,7 @@
 			transform: scale(1.01);
 		}
 	}
-	
+
 	@keyframes scale-in-fade {
 		from {
 			opacity: 0;

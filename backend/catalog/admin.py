@@ -42,10 +42,7 @@ class CatalogAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         """Limit view to non-superusers if necessary, or preserve scope."""
         qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        # Staff users can only manage catalogs they own
-        return qs.filter(user=request.user)
+        return qs
 
     def save_model(self, request, obj, form, change):
         """Automatically tag the creator if saving from the admin pane."""
@@ -193,7 +190,9 @@ class CatalogAdmin(admin.ModelAdmin):
                     message=f"Catalog asset '{item.name}' published manually via Django admin panel.",
                     status="success",
                     source="catalog.admin.CatalogAdmin",
-                    target_catalog_id=str(item.catalog_id),
+                    extra = {
+                        'target_catalog_id':str(item.catalog_id),
+                    }
                 )
         self.message_user(request, f"Successfully published {count} items.")
 
@@ -207,7 +206,9 @@ class CatalogAdmin(admin.ModelAdmin):
                     message=f"Catalog asset '{item.name}' archived manually via Django admin panel.",
                     status="success",
                     source="catalog.admin.CatalogAdmin",
-                    target_catalog_id=str(item.catalog_id),
+                    extra = {
+                        'target_catalog_id':str(item.catalog_id),
+                    }
                 )
         self.message_user(request, f"Successfully archived {count} items.")
 

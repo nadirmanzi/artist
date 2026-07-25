@@ -22,7 +22,7 @@ class Catalog(models.Model):
 
     catalog_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    name = models.CharField(unique=True, max_length=255) # required
+    name = models.CharField(unique=True, max_length=255)
 
     description = models.TextField(blank=True, null=True)
 
@@ -67,4 +67,5 @@ class Catalog(models.Model):
     def clean(self):
         if self.price is not None and self.price < 0:
             raise ValidationError({"price": "Price cannot be negative."})
+
 

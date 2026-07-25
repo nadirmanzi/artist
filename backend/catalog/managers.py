@@ -151,3 +151,5 @@ class CatalogManager(models.Manager):
             Catalog.objects.published_for_user(artist)
         """
         return self.published().filter(user=user)
+
+

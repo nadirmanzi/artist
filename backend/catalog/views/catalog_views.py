@@ -35,7 +35,7 @@ import logging
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
@@ -113,13 +113,14 @@ class CatalogViewSet(viewsets.ModelViewSet):
         user = self.request.user
 
         if user.is_superuser:
-            return Catalog.objects.select_related("user").all()
+            return Catalog.objects.all()
 
         if user.is_staff and user.has_perm("catalog.view_catalog"):
-            return Catalog.objects.select_related("user").all()
+            return Catalog.objects.all()
+
 
         # Safe fallback — permission layer should have blocked before reaching here
-        return Catalog.objects.none()
+        return Catalog.objects.published()
 
     def get_serializer_class(self):
         """
@@ -152,6 +153,10 @@ class CatalogViewSet(viewsets.ModelViewSet):
 
         Mirrors get_permissions() in UserManagementViewSet.
         """
+
+        if self.action == "list":
+            return [AllowAny()]
+
         return [IsAuthenticated(), CatalogPermission()]
 
     # -------------------------
@@ -238,7 +243,9 @@ class CatalogViewSet(viewsets.ModelViewSet):
             message=f"Catalog '{catalog.name}' created via API by user {request.user.user_id}",
             status="success",
             source="catalog.views.CatalogViewSet.create",
-            target_catalog_id=str(catalog.catalog_id),
+            extra={
+                "target_catalog_id": str(catalog.catalog_id),
+            }
         )
 
         return Response(
@@ -313,7 +320,9 @@ class CatalogViewSet(viewsets.ModelViewSet):
             ),
             status="in_progress",
             source="catalog.views.CatalogViewSet.destroy",
-            target_catalog_id=str(catalog.catalog_id),
+            extra={
+                "target_catalog_id": str(catalog.catalog_id),
+            }
         )
 
         CatalogService.delete_catalog(catalog)

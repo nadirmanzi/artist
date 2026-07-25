@@ -48,22 +48,12 @@ class CatalogPermission(permissions.BasePermission):
         """
         user = request.user
 
-        # Must be authenticated
-        if not user or not user.is_authenticated:
-            return False
 
         # Superusers can do anything
         if user.is_superuser:
             return True
 
-        # List: requires view_catalog permission
-        if view.action == "list":
-            return user.is_staff and user.has_perm("catalog.view_catalog")
-
-        # Retrieve: requires view_catalog permission
-        if view.action == "retrieve":
-            return user.is_staff and user.has_perm("catalog.view_catalog")
-
+       
         # Create: requires add_catalog permission
         # Catalog is auto-assigned to request.user — user field is never in request body
         if view.action == "create":
@@ -108,10 +98,6 @@ class CatalogPermission(permissions.BasePermission):
         # Superusers can do anything
         if user.is_superuser:
             return True
-
-        # Safe read methods (GET, HEAD, OPTIONS) — view_catalog required
-        if request.method in permissions.SAFE_METHODS:
-            return user.is_staff and user.has_perm("catalog.view_catalog")
 
         # Write methods — check specific permission per action
         if view.action in ["update", "partial_update"]:

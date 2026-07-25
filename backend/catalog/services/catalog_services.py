@@ -80,7 +80,7 @@ class CatalogService:
                 message=f"Catalog '{catalog.name}' created by user {user.user_id}",
                 status="success",
                 source="catalog.services.catalog_services",
-                target_catalog_id=str(catalog.catalog_id),
+                extra={'target_catalog_id':str(catalog.catalog_id),}
             )
             return catalog
 
@@ -134,8 +134,7 @@ class CatalogService:
                 message=f"Catalog '{catalog.name}' updated",
                 status="success",
                 source="catalog.services.catalog_services",
-                target_catalog_id=str(catalog.catalog_id),
-                extra={"updated_fields": list(validated_data.keys())},
+                extra={"updated_fields": list(validated_data.keys()), 'target_catalog_id':str(catalog.catalog_id),},
             )
             return catalog
 
@@ -149,7 +148,7 @@ class CatalogService:
                 message=f"Database error updating catalog: {str(e)}",
                 status="failed",
                 source="catalog.services.catalog_services",
-                target_catalog_id=str(catalog.catalog_id),
+                extra={'target_catalog_id':str(catalog.catalog_id),}
             )
             raise
 
@@ -184,7 +183,7 @@ class CatalogService:
                 message=f"Catalog '{catalog_name}' permanently deleted",
                 status="success",
                 source="catalog.services.catalog_services",
-                target_catalog_id=catalog_id,
+                extra={'target_catalog_id':catalog_id,}
             )
 
         except DatabaseError as e:
@@ -193,7 +192,7 @@ class CatalogService:
                 message=f"Database error deleting catalog: {str(e)}",
                 status="failed",
                 source="catalog.services.catalog_services",
-                target_catalog_id=catalog_id,
+                extra={'target_catalog_id':catalog_id,}
             )
             raise
 
@@ -228,7 +227,7 @@ class CatalogService:
                 message=f"Catalog '{catalog.name}' published",
                 status="success",
                 source="catalog.services.catalog_services",
-                target_catalog_id=str(catalog.catalog_id),
+                extra={'target_catalog_id':str(catalog.catalog_id),}
             )
             return catalog
 
@@ -238,7 +237,7 @@ class CatalogService:
                 message=f"Database error publishing catalog: {str(e)}",
                 status="failed",
                 source="catalog.services.catalog_services",
-                target_catalog_id=str(catalog.catalog_id),
+                extra={'target_catalog_id':str(catalog.catalog_id),}
             )
             raise
 
@@ -274,7 +273,7 @@ class CatalogService:
                 message=f"Catalog '{catalog.name}' archived",
                 status="success",
                 source="catalog.services.catalog_services",
-                target_catalog_id=str(catalog.catalog_id),
+                extra={'target_catalog_id':str(catalog.catalog_id),}
             )
             return catalog
 
@@ -284,7 +283,7 @@ class CatalogService:
                 message=f"Database error archiving catalog: {str(e)}",
                 status="failed",
                 source="catalog.services.catalog_services",
-                target_catalog_id=str(catalog.catalog_id),
+                extra={'target_catalog_id':str(catalog.catalog_id),}
             )
             raise
 
@@ -319,7 +318,7 @@ class CatalogService:
                 message=f"Catalog '{catalog.name}' reverted to draft",
                 status="success",
                 source="catalog.services.catalog_services",
-                target_catalog_id=str(catalog.catalog_id),
+                extra={'target_catalog_id':str(catalog.catalog_id),}
             )
             return catalog
 
@@ -329,6 +328,6 @@ class CatalogService:
                 message=f"Database error setting catalog to draft: {str(e)}",
                 status="failed",
                 source="catalog.services.catalog_services",
-                target_catalog_id=str(catalog.catalog_id),
+                extra={'target_catalog_id':str(catalog.catalog_id),}
             )
             raise
