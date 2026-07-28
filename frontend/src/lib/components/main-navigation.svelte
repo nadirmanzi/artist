@@ -29,12 +29,12 @@
 		role="button"
 		tabindex="-1"
 		aria-label="Close navigation overlay"
-		class="fixed inset-0 bg-black/80 backdrop-blur-lg z-40 md:hidden"
+		class="fixed inset-0 bg-foreground/20 z-40 md:hidden"
 	></div>
 {/if}
 
 <nav
-	class="bg-surface/80 sm:bg-background/80 z-[50] border-b border-surface-border/50 shadow-lg w-full lg:w-[65%] rounded-none md:lg:rounded-full transition-all duration-300 relative isolate"
+	class="bg-foreground/60 z-50 border border-foreground/20 shadow-lg w-full lg:w-[65%] rounded-none md:lg:rounded-full transition-all duration-300 relative isolate"
 >
 	<!-- Main Header Bar -->
 	<div class="h-15 flex items-center justify-between pr-4 pl-8 relative z-10">
@@ -42,7 +42,7 @@
 			<a
 				href="/"
 				onclick={closeMenu}
-				class="font-light text-foreground font-display text-xl tracking-wide"
+				class="font-light text-white font-display text-xl tracking-wide"
 			>
 				Studio Mugire
 			</a>
@@ -81,7 +81,7 @@
 			<Button
 				href="/classes"
 				variant={isActive('/classes') ? 'filled' : 'outline'}
-				color="black"
+				color="white"
 				class="hidden md:flex"
 			>
 				Book a class
@@ -108,8 +108,8 @@
 								onclick={closeMenu}
 								class={`block py-2.5 px-4 rounded-full text-base font-medium transition-all duration-200 ${
 									isActive(link.href)
-										? 'bg-black text-white font-semibold'
-										: 'text-foreground/80 hover:text-white hover:bg-background'
+										? 'bg-white text-foreground font-semibold'
+										: 'text-white hover:text-black hover:bg-background'
 								}`}
 							>
 								{link.name}
@@ -127,14 +127,14 @@
 				<!-- Mobile CTA Button -->
 				<div
 					in:fly={{ y: 20, duration: 300, delay: 120 + navLinks.length * 50, easing: backOut }}
-					class="w-full max-w-xs"
+					class="w-full"
 				>
 					<Button
 						href="/classes"
 						variant={isActive('/classes') ? 'filled' : 'outline'}
-						color="black"
+						color="white"
+						class='w-full'
 						onclick={closeMenu}
-						class="w-full py-3 text-base shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-transform"
 					>
 						Book a class
 					</Button>
@@ -146,7 +146,7 @@
 
 <style>
 	nav {
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
+		backdrop-filter: blur(35px);
+		-webkit-backdrop-filter: blur(35px);
 	}
 </style>

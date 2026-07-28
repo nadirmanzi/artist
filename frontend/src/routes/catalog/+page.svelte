@@ -8,7 +8,7 @@
     import Input from '$lib/components/ui/input.svelte';
     import ArrowRight from '@tabler/icons-svelte-runes/icons/arrow-right';
     import ArrowUpRight from '@tabler/icons-svelte-runes/icons/arrow-up-right';
-    import {PUBLIC_BACKEND_URL} from "$env/static/public"
+    import { PUBLIC_BACKEND_URL } from "$env/static/public";
 
     let { data } = $props();
 
@@ -16,7 +16,6 @@
         { name: 'All', href: '/catalog' },
         { name: 'Mixed Media', href: '/catalog/mixed-media' },
         { name: 'Landscapes', href: '/catalog/landscapes' },
-        { name: 'Portraits', href: '/catalog/portraits' }
     ]);
 
     let catalog = $derived(data.catalog ?? []);
@@ -65,7 +64,7 @@
 
 <div class="h-[30dvh] bg-surface w-full flex flex-col justify-end px-6 sm:px-12 md:px-20">
     <div class="py-10">
-        <p class="font-display text-3xl sm:text-4xl md:text-5xl">Artwork by David</p>
+        <p class="font-display text-3xl sm:text-4xl md:text-5xl">Artworks by David Mugire Peace</p>
     </div>
 </div>
 
@@ -95,7 +94,7 @@
                 <img
                     src={`${PUBLIC_BACKEND_URL}/${artwork.image}`}
                     alt={artwork.name}
-                    class="h-[25rem] sm:h-[30rem] md:h-[35rem] w-full object-cover rounded-2xl"
+                    class="h-100 sm:h-120 md:h-140 w-full object-cover rounded-2xl"
                 />
                 <div>
                     <p class="font-display font-semibold text-xl">{artwork.name}</p>
@@ -115,11 +114,11 @@
                             </Dialog.Trigger>
 
                             <Dialog.Content
-                                class="z-[60] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85dvh] h-[90dvh] md:h-[75%] min-w-[95%] md:min-w-[90%] grid grid-cols-1 md:grid-cols-5 gap-4 p-0 overflow-y-auto md:overflow-hidden bg-transparent rounded-3xl"
+                                class="z-60 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85dvh] h-[90dvh] md:h-[75%] min-w-[95%] md:min-w-[90%] grid grid-cols-1 md:grid-cols-5 gap-4 p-0 overflow-y-auto md:overflow-hidden bg-transparent rounded-3xl"
                             >
                                 <!-- Left Column: Artwork Specs & Preview -->
-                                <div class="md:col-span-3 bg-surface overflow-y-auto p-6 md:p-8 space-y-6 min-h-[250px] md:min-h-0">
-                                    <div class="relative w-full h-full min-h-[250px] overflow-hidden">
+                                <div class="md:col-span-3 bg-surface overflow-y-auto p-6 md:p-8 space-y-6 min-h-62.5 md:min-h-0">
+                                    <div class="relative w-full h-full min-h-62.5 overflow-hidden">
                                         <img
                                             src={`${PUBLIC_BACKEND_URL}/${artwork.image}`}
                                             alt={artwork.name}
@@ -275,6 +274,26 @@
                     </div>
                 </div>
             </div>
+        {:else}
+            <div class="col-span-full py-16 md:py-24 flex flex-col items-center justify-center text-center space-y-4 bg-surface rounded-3xl border border-black/10 px-6">
+                <p class="font-display font-semibold text-2xl md:text-3xl">No artworks found</p>
+                <p class="text-surface-foreground-muted text-sm sm:text-base max-w-md">
+                    {selectedCategory === 'All'
+                        ? 'There are currently no items available in the catalog. Check back soon for new additions.'
+                        : `No pieces currently match the "${selectedCategory}" category.`}
+                </p>
+                {#if selectedCategory !== 'All'}
+                    <Button
+                        color="black"
+                        variant="tonal"
+                        size="sm"
+                        class="mt-2"
+                        onclick={() => (selectedCategory = 'All')}
+                    >
+                        View All Artworks
+                    </Button>
+                {/if}
+            </div>
         {/each}
     </div>
 </div>
@@ -289,6 +308,6 @@
             </p>
         </div>
 
-        <Button color="white" size="lg" class="w-full md:w-auto">REQUEST A COMMISSION</Button>
+        <Button color="white" size="lg" class="w-full md:w-auto" href='/contacts'>REQUEST A COMMISSION</Button>
     </div>
 </div>

@@ -18,12 +18,12 @@
 </script>
 
 <div class="">
-	<AnimatedPillGroup class="flex items-center space-x-0" direction="horizontal" color="black">
+	<AnimatedPillGroup class="flex items-center space-x-0" direction="horizontal" color="white">
 		{#each navLinks as link (link.name)}
 			<AnimatedPillItem
 				active={activeLink(link)}
 				href={link.href}
-				class={`${activeLink(link) ? 'text-white font-semibold text-sm' : 'text-surface-foreground-muted font-semibold hover:text-white'} px-4 text-sm py-2`}
+				class={`${activeLink(link) ? 'text-foreground font-semibold text-sm' : 'text-white font-medium hover:text-foreground'} px-4 text-sm py-2`}
 			>
 				{link.name}
 			</AnimatedPillItem>

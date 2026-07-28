@@ -37,7 +37,7 @@
 	<MainNavigation />
 </header>
 
-<main class="text-foreground max-w-screen min-h-dvh bg-background" id="main-container">
+<main class="text-foreground max-w-screen h-dvh bg-surface" id="main-container">
 	{@render children()}
 </main>
 

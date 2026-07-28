@@ -1,47 +1,19 @@
 <script lang="ts">
 	import ArtistImage from '$lib/assets/artist.jpeg';
+	import StudioImage from '$lib/assets/studio.jpeg';
 	import { Button } from '$lib/components/ui/button';
 	import PageBanner from '$lib/components/page-banner.svelte';
 	import { animate } from '$lib/utils/animate';
-	import { gsap } from 'gsap';
-
-	// Playful hover tilt for the practice cards (section 03) — cursor-driven, additive only.
-	function tiltCard(e: MouseEvent) {
-		const card = e.currentTarget as HTMLElement;
-		const rect = card.getBoundingClientRect();
-		const px = (e.clientX - rect.left) / rect.width;
-		const py = (e.clientY - rect.top) / rect.height;
-
-		gsap.to(card, {
-			rotateX: (py - 0.5) * -8,
-			rotateY: (px - 0.5) * 8,
-			y: -4,
-			duration: 0.5,
-			ease: 'power2.out',
-			transformPerspective: 700,
-			transformOrigin: 'center'
-		} as gsap.TweenVars);
-	}
-
-	function resetCard(e: MouseEvent) {
-		gsap.to(
-			e.currentTarget as HTMLElement,
-			{
-				rotateX: 0,
-				rotateY: 0,
-				y: 0,
-				duration: 0.6,
-				ease: 'power3.out'
-			} as gsap.TweenVars
-		);
-	}
 </script>
 
 <svelte:head>
 	<title>Meet the Artist</title>
 </svelte:head>
 
-<PageBanner text="Where painting becomes a conversation with the world." image="/art-2.jpeg" />
+<PageBanner
+	text="Exploring the connection between nature, color, and emotion"
+	image="/images/about-banner.PNG"
+/>
 
 <!-- SECTION 01: THE STUDIO -->
 <div
@@ -50,7 +22,7 @@
 	<div
 		class="h-[50dvh] sm:h-[60dvh] lg:h-[80dvh] w-full flex items-center justify-center overflow-hidden"
 	>
-		<img src="/images/studio.jpg" alt="The Studio" class="h-full w-full lg:w-[80%] object-cover" />
+		<img src={StudioImage} alt="The Studio" class="h-full w-full lg:w-[80%] object-cover" />
 	</div>
 
 	<div
@@ -88,24 +60,26 @@
 
 		<div class="space-y-6 py-8 border-b border-black/30 text-surface-foreground-muted">
 			<p>
-				Studio Mugire is a contemporary art studio and gallery based in Kigali, Rwanda. Founded as a
-				space where art making and reflection converge, the studio produces original works across
-				painting, mixed media, and commissions.
+				Studio Mugire is a contemporary art studio and gallery based in Kigali, Rwanda, founded by
+				artist David Mugire. The studio brings together original artworks, exhibitions, creative
+				experiences, and opportunities for people to engage with art in different ways.
 			</p>
 
 			<p>
-				The name Mugire — meaning "let it grow" in Kinyarwanda — captures the studio's ethos: a
-				commitment to organic creative development, rooted in place and open to the world.
+				Inspired by nature and the emotions found within it, Studio Mugire explores the relationship
+				between color, texture, and imagination. Through paintings, workshops, collaborations, and
+				conversations, the studio creates a space where people can discover, experience, and connect
+				with contemporary art.
 			</p>
 
 			<p>
-				The studio welcomes collectors, institutions, and individuals seeking original artworks,
-				custom commissions, and immersive workshops led by the artist.
+				We welcome you to visit Studio Mugire and experience a place where creativity, stories, and
+				nature meet.
 			</p>
 		</div>
 
 		<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 py-6">
-			{#each [{ label: 'Practice', value: 'Painting & Mixed Media' }, { label: 'Location', value: 'Kigali, Rwanda' }, { label: 'Founded', value: '2018' }] as stat, i (stat.label)}
+			{#each [{ label: 'Practice', value: 'Landscape Paintings & Mixed Media' }, { label: 'Location', value: 'Kigali, Rwanda' }, { label: 'Founded', value: '2022' }] as stat, i (stat.label)}
 				<div
 					class="flex flex-col space-y-2 sm:space-y-4"
 					use:animate={{
@@ -131,7 +105,7 @@
 
 <!-- SECTION 02: THE ARTIST -->
 <div
-	class="px-6 sm:px-10 pt-12 md:pt-20 pb-16 md:pb-30 grid grid-cols-1 lg:grid-cols-2 gap-10 border-b bg-surface border-black/10"
+	class="px-6 sm:px-10 pt-12 md:pt-20 pb-16 md:pb-10 grid grid-cols-1 lg:grid-cols-2 gap-10 border-b bg-surface border-black/10"
 >
 	<div
 		class="space-y-4 px-0 lg:px-10 flex flex-col justify-center order-2 lg:order-1"
@@ -151,59 +125,71 @@
 
 		<p class="font-display font-semibold text-3xl sm:text-4xl">Mugire Peace David</p>
 
-		<div class="space-y-6 py-8 border-b border-black/30 text-surface-foreground-muted">
-			<p>
-				Mugire Peace David is a Rwandan contemporary artist whose practice spans painting, mixed
-				media, and site-specific installations. His work draws on landscape, memory, and the
-				textures of everyday life in Central Africa, rendered through layered surfaces and
-				restrained palettes.
-			</p>
+		<div class="space-y-6 py-8 text-surface-foreground-muted">
+			<div class="space-y-4 border-b border-surface-border py-4">
+				<p class="text-secondary font-semibold font-display">The Journey</p>
+				<p>
+					Born and based in Rwanda, David Mugire developed a deep connection with art through his
+					fascination with the landscapes, colors, and stories that surround him. His artistic
+					journey led him to study at Nyundo School of Arts, where he continued developing his
+					creative language and exploring different approaches to painting. Over the years, his
+					practice has evolved into a distinctive style centered around texture, movement, and the
+					emotional power of landscapes.
+				</p>
+			</div>
 
-			<p>
-				Trained in fine arts and self-developed through years of rigorous studio practice, David's
-				work has been exhibited across Rwanda and internationally. Each canvas is an act of
-				listening — to place, to material, to the quiet forces that shape a life.
-			</p>
+			<div class="space-y-4 border-b border-surface-border py-4">
+				<p class="text-secondary font-semibold font-display">Artistic Practice</p>
+				<p>
+					Working primarily with palette knives and mixed media techniques, David creates richly
+					textured surfaces where layers of color and materials build depth, movement, and emotion.
+					His landscapes are not simply representations of places, but reflections of feelings,
+					memories, and personal experiences. Through each layer, he explores the connection between
+					people and the natural world, inviting viewers to experience landscapes beyond what is
+					visible.
+				</p>
+			</div>
 
-			<p>
-				Beyond the canvas, he facilitates workshops and classes designed to bring people into
-				contact with their own creative instincts, fostering a broader culture of making in Kigali
-				and beyond.
-			</p>
-		</div>
+			<div class="space-y-4 border-b border-surface-border py-4">
+				<p class="font-semibold font-display text-secondary">Inspiration & Themes</p>
 
-		<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 py-6 gap-3 sm:gap-4">
-			{#each ['Painting', 'Mixed Media', 'Landscapes', 'Commissions', 'Workshops'] as tag, i (tag)}
-				<div
-					class={`border text-center p-2 rounded-lg border-black/20 transition-transform duration-200 hover:-translate-y-1 hover:rotate-1 hover:border-black/40 ${i === 4 ? 'col-span-2 sm:col-span-1' : ''}`}
-					use:animate={{
-						type: 'from',
-						opacity: 0,
-						scale: 0.5,
-						rotate: i % 2 === 0 ? -10 : 10,
-						ease: 'back.out(2.5)',
-						scrollTrigger: {
-							start: `top ${92 - i * 3}%`,
-							end: `top ${68 - i * 3}%`,
-							scrub: true
-						}
-					}}
-				>
-					<p class="text-surface-foreground-muted text-sm">{tag}</p>
+				<div class="space-y-2">
+					<p>
+						Nature is at the heart of David’s practice. Through landscapes, he explores moments of
+						peace, reflection, and the quiet beauty found in the world around us.
+					</p>
+
+					<p>
+						Texture allows David to create a deeper relationship between the artwork and the viewer.
+						Each layer carries movement, energy, and emotion, transforming the surface into an
+						experience.
+					</p>
 				</div>
-			{/each}
+			</div>
+
+			<div class="space-y-4 py-4">
+				<p class="font-semibold text-secondary font-display">Selected Exhibitions</p>
+
+				<ul class="space-y-2 list-disc px-4">
+					<li>Talk Melanin - Art Fair Brussels, Belgium (2026)</li>
+					<li>Rwanda Nziza – Try Out Art Gallery, Belgium (2024)</li>
+					<li>Standing on a Thousand Hills – Mechelen, Belgium (2024)</li>
+					<li>Africanism – L’ESPACE, Kigali (2021)</li>
+					<li>Mama Rwanda (2019)</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 
 	<div
-		class="h-[50dvh] sm:h-[60dvh] lg:h-[80dvh] w-full flex items-center justify-center order-1 lg:order-2 overflow-hidden"
+		class="h-[50dvh] sm:h-[60dvh] sm:sticky sm:top-24 lg:h-[80dvh] w-full flex items-center justify-center order-1 lg:order-2 overflow-hidden"
 	>
 		<img src={ArtistImage} alt="Mugire Peace David" class="h-full w-full lg:w-[80%] object-cover" />
 	</div>
 </div>
 
 <!-- SECTION 03: PRACTICE -->
-<div class="px-6 sm:px-10 pt-12 md:pt-20 pb-16 md:pb-30 flex flex-col gap-10">
+<div class="px-6 sm:px-10 pt-12 md:pt-20 pb-16 md:pb-30 flex flex-col gap-10 bg-background">
 	<div
 		class="space-y-4 px-0 lg:px-10 flex flex-col justify-center"
 		use:animate={{
@@ -218,19 +204,20 @@
 			}
 		}}
 	>
-		<p class="text-surface-foreground-muted">03 / Practice</p>
+		<p class="text-surface-foreground-muted">03 / More</p>
 	</div>
 
 	<div class="grid grid-cols-1 md:grid-cols-3 rounded-lg overflow-hidden gap-8 md:gap-0">
-		{#each [{ title: 'Original Artworks', copy: 'A growing body of original paintings and mixed media works available for acquisition. Each piece is unique, produced in the studio with intention and care.' }, { title: 'Commissions', copy: 'Custom works created in close collaboration with collectors and institutions. The artist works from references, conversations, and site visits to produce pieces made for specific spaces and people.' }, { title: 'Workshops & Classes', copy: 'Studio sessions open to individuals and groups — from beginners to practicing artists. The workshops explore painting, mixed media, and creative process in an intimate studio environment.' }] as practice, i (practice.title)}
+		{#each [
+		{ title: 'Projects', copy: "David Mugire’s work extends beyond the studio through projects in hospitality, literature, community engagement, and international cultural initiatives, including SINGITA KWITONDA LODGE, UNESCO Headquarters in Paris, Jacaranda by GAËL FAYE, and UNHCR Rwanda." },
+		{ title: 'Collaborations', copy: "At Studio Mugire, we believe collaboration creates meaningful connections between art, people, and ideas. We welcome partnerships with galleries, cultural institutions, hospitality brands, designers, schools, and organizations." },
+		{ title: 'Artist Talks & Lectures', copy: "David Mugire has been invited to share his artistic journey through talks and lectures at ACADÉMIE MECHELEN, ACADÉMIE POPERINGE, and GREEN HILLS ACADEMY, inspiring conversations around art, creativity, and contemporary practice." }] as practice, i (practice.title)}
 			<div
-            role='button'
-            tabindex='0'
-				class={`relative px-0 md:px-10 py-4 md:py-4 space-y-6 md:space-y-8 transform-3d will-change-transform ${
+				role="button"
+				tabindex="0"
+				class={`relative px-0 md:px-10 py-4 md:py-4 space-y-6 md:space-y-8 ${
 					i === 1 ? 'border-y md:border-y-0 md:border-x border-black/20 py-8' : ''
 				}`}
-				onmousemove={tiltCard}
-				onmouseleave={resetCard}
 			>
 				<!-- Accent line draws in per-card, staggered like a row of dominoes -->
 				<div
@@ -256,15 +243,15 @@
 						ease: 'none',
 						scrollTrigger: {
 							start: `top ${95 - i * 5}%`,
-							end: `top ${60 - i * 5}%`,
+							end: `top ${75 - i * 5}%`,
 							scrub: true
 						}
 					}}
 				>
-					<div class="space-y-2">
+					<div class="space-y-4">
 						<p class="font-display text-2xl sm:text-3xl">{practice.title}</p>
+						<p class="text-surface-foreground-muted">{practice.copy}</p>
 					</div>
-					<p class="text-surface-foreground-muted">{practice.copy}</p>
 				</div>
 			</div>
 		{/each}
@@ -284,7 +271,7 @@
 			ease: 'none',
 			scrollTrigger: {
 				start: 'top 95%',
-				end: 'top 55%',
+				end: 'top 60%',
 				scrub: true
 			}
 		}}

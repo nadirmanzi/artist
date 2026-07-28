@@ -5,6 +5,14 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
+export function formatPrice(price: number | string) {
+        return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'RWF'
+        }).format(Number(price))
+}
+
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type WithoutChild<T> = T extends { child?: any } ? Omit<T, "child"> : T;

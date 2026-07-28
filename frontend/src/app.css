@@ -4,6 +4,9 @@
 @import '@fontsource-variable/playfair-display/wght.css';
 @import '@fontsource-variable/eb-garamond/wght.css';
 
+
+@import '@fontsource-variable/plus-jakarta-sans/wght.css';
+
 @theme {
 	/* PRIMARY — Electric Blue #0066ff */
 	--color-primary: oklch(55% 0.22 260);
@@ -49,7 +52,7 @@
 	--color-foreground: oklch(16% 0 0);
 	--color-surface: oklch(100% 0 0);
 	--color-surface-hover: oklch(95% 0 0);
-	--color-surface-foreground-muted: oklch(50% 0 0);
+	--color-surface-foreground-muted: oklch(40% 0 0);
 	--color-on-surface: oklch(16% 0 0);
 
 	/* BORDERS */
@@ -72,6 +75,7 @@
 
 body {
 	font-family: 'EB Garamond Variable', serif;
-	font-size: 1.05rem;
+	font-size: 1.2rem;
+	font-weight: 300;
 	user-select: none;
 }

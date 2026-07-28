@@ -165,7 +165,7 @@ CORS_ALLOW_HEADERS = (
 )
 
 # CSRF Configuration
-CSRF_TRUSTED_ORIGINS = [FRONTEND_URL, "http://api.localhost", "http://backend:8000"]
+CSRF_TRUSTED_ORIGINS = [FRONTEND_URL, "http://api.localhost", "http://backend:8000", 'https://69c3-2c0f-eb68-68b-fe00-dd71-54e2-4485-27b.ngrok-free.app']
 
 # Auth user model
 AUTH_USER_MODEL = "users.User"

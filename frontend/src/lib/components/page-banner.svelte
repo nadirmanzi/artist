@@ -6,7 +6,7 @@
     const words = $derived(text.trim().split(/\s+/));
 </script>
 
-<div class="h-[22rem] sm:h-[26rem] md:h-[30rem] relative w-full overflow-hidden bg-white">
+<div class="h-[22rem] sm:h-[26rem] md:h-[30rem] relative w-full overflow-hidden bg-background">
     <div class="h-full w-full">
         <img
             src={image}

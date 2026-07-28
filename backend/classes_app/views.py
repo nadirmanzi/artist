@@ -1,9 +1,9 @@
 import logging
 
-from rest_framework import viewsets, status
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
-from drf_spectacular.utils import extend_schema, extend_schema_view
 
 from .models import ClassBooking, ClassProgram, StudioClass
 from .serializers import (
@@ -36,7 +36,7 @@ class StudioClassViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = StudioClassSerializer
 
     def get_queryset(self):
-        return StudioClass.objects.active().prefetch_related("programs")
+        return StudioClass.objects.filter(is_active=True).prefetch_related("programs")
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()

@@ -3,35 +3,27 @@
 
 	import ArrowDown from '@tabler/icons-svelte-runes/icons/arrow-down';
 
-	import Compass from '@tabler/icons-svelte-runes/icons/compass';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import * as Carousel from '$lib/components/ui/carousel';
 	import { animate } from '$lib/utils/animate';
 	import { gsap } from 'gsap';
 	import type { PageData } from './$types';
+	import Autoplay from "embla-carousel-autoplay";
 
-	import HeroImage from '$lib/assets/hero-3.jpeg';
+	import HeroImage from '$lib/assets/hero-4.jpeg';
+	import HeroImage3 from '$lib/assets/hero-3.jpeg';
 	import HeroImage2 from '$lib/assets/art-2.jpeg';
 
 	let { data }: { data: PageData } = $props();
 
 	const carouselImages = $state([
 		{ img: HeroImage2, alt: 'Abstract artwork 1' },
-		{ img: HeroImage, alt: 'Abstract artwork 2' }
+		{ img: HeroImage, alt: 'Abstract artwork 2' },
+		{ img: HeroImage3, alt: 'Abstract artwork 3' },
 	]);
 
 	const featuredWork = $derived((data.catalogs ?? []).slice(0, 4));
-
-	const commissionSteps = [
-		{
-			title: 'Consultation',
-			copy: 'We talk mood, scale, and the architectural space it will inhabit.'
-		},
-		{ title: 'Concept', copy: 'Color studies and initial direction return for your feedback.' },
-		{ title: 'Creation', copy: 'Built in layers over 3–5 weeks with milestone photo updates.' },
-		{ title: 'Delivery', copy: 'Crated, insured, and delivered directly to your doorstep.' }
-	];
 
 	// Magnetic tilt for featured work cards — cursor-driven, purely additive.
 	function tiltCard(e: MouseEvent) {
@@ -72,7 +64,7 @@
 <!-- ==========================================
      A. HERO — parallax scrub + on-load entrance
      ========================================== -->
-<div class="relative h-[100dvh] w-full overflow-hidden bg-black">
+<div class="relative h-dvh w-full overflow-hidden">
 	<div
 		class="absolute inset-0 z-0 h-full w-full"
 		use:animate={{
@@ -87,10 +79,10 @@
 			}
 		}}
 	>
-		<Carousel.Root class="h-full w-full" opts={{ loop: true }}>
+		<Carousel.Root class="h-full w-full" opts={{direction: 'ltr', loop: true}} plugins={[Autoplay({delay:4000})]}>
 			<Carousel.Content class="h-full">
 				{#each carouselImages as image (image.img)}
-					<Carousel.Item class="h-[100dvh] w-full shrink-0 pl-0">
+					<Carousel.Item class="h-dvh w-full shrink-0 pl-0">
 						<div class="h-full w-full overflow-hidden">
 							<img
 								src={image.img}
@@ -190,54 +182,59 @@
 <!-- ==========================================
      B. ETHOS — clip-path reveal scrubbed to scroll
      ========================================== -->
-<section class="mx-auto max-w-7xl overflow-hidden px-4 py-24 sm:px-8 lg:px-16 lg:py-36">
-	<div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-		<div
-			class="lg:col-span-7"
-			use:animate={{
-				type: 'from',
-				opacity: 0,
-				y: 80,
-				scale: 0.95,
-				clipPath: 'inset(0 0 100% 0)',
-				ease: 'none',
-				scrollTrigger: {
-					start: 'top 95%',
-					end: 'top 45%',
-					scrub: true
-				}
-			}}
-		>
-			<p class="mb-4 text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground">
-				Our Philosophy
-			</p>
-			<h2 class="font-display text-3xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-				Art designed to hold space in modern interiors.
-			</h2>
-		</div>
 
-		<div
-			class="flex flex-col justify-end lg:col-span-5"
-			use:animate={{
-				type: 'from',
-				opacity: 0,
-				y: 60,
-				ease: 'none',
-				scrollTrigger: {
-					start: 'top 90%',
-					end: 'top 40%',
-					scrub: true
-				}
-			}}
-		>
-			<p class="text-base leading-relaxed text-muted-foreground sm:text-lg">
-				Studio Mugire produces limited fine art pieces and client commissions focused on scale,
-				physical texture, and minimalist form. Every work is crafted with archival mediums in our
-				local studio.
-			</p>
+<div class="bg-background">
+	<section class="mx-auto max-w-7xl overflow-hidden px-4 py-24 sm:px-8 lg:px-16 lg:py-36">
+		<div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+			<div
+				class="lg:col-span-7 text-start"
+				use:animate={{
+					type: 'from',
+					opacity: 0,
+					y: 80,
+					scale: 0.95,
+					clipPath: 'inset(0 0 100% 0)',
+					ease: 'none',
+					scrollTrigger: {
+						start: 'top 95%',
+						end: 'top 45%',
+						scrub: true
+					}
+				}}
+			>
+				<p
+					class="mb-4 text-xs px-2 font-bold tracking-[0.2em] text-secondary uppercase text-muted-foreground"
+				>
+					Studio Philosophy
+				</p>
+				<h2 class="font-display text-3xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+					Art, nature, and <br /> emotion come together.
+				</h2>
+			</div>
+
+			<div
+				class="flex flex-col justify-end lg:col-span-5"
+				use:animate={{
+					type: 'from',
+					opacity: 0,
+					y: 60,
+					ease: 'none',
+					scrollTrigger: {
+						start: 'top 90%',
+						end: 'top 40%',
+						scrub: true
+					}
+				}}
+			>
+				<p class="text-base leading-relaxed text-surface-foreground-muted sm:text-lg">
+					At Studio Mugire, we believe art is a bridge between people, emotions, and the natural
+					world around us. Inspired by the beauty, movement, and quiet moments found in nature, we
+					create a space where creativity, learning and connection can flourish.
+				</p>
+			</div>
 		</div>
-	</div>
-</section>
+	</section>
+</div>
 
 <!-- ==========================================
      D. THE ARTIST — pinned-feel scrub zoom + skew
@@ -264,7 +261,7 @@
 				<img
 					src="/images/mugire.jpeg"
 					alt="David Mugire working in the studio"
-					class="aspect-[4/5] w-full object-cover"
+					class="aspect-4/5 w-full object-cover"
 				/>
 			</div>
 
@@ -282,16 +279,22 @@
 					}
 				}}
 			>
-				<span class="text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground">
-					Behind the Canvas
+				<span
+					class="text-xs font-bold tracking-[0.2em] text-secondary uppercase text-muted-foreground"
+				>
+					Meet the artist
 				</span>
 				<h2 class="font-display text-3xl font-bold sm:text-5xl">David Mugire</h2>
-				<p class="text-base leading-relaxed text-muted-foreground sm:text-lg">
-					Working primarily with raw pigments, acrylic polymers, and natural fibers, David explores
-					how physical depth creates quiet points of focus in architectural spaces.
+				<p class="text-base leading-relaxed text-surface-foreground-muted sm:text-lg">
+					David Peace Mugire is a contemporary artist whose work explores the connection between
+					nature, emotion and memory through textured landscapes and mixed media. Using palette
+					knives and layered surfaces, he creates artworks that invite viewers to experience the
+					beauty and stories within nature.
 				</p>
 				<div>
-					<Button href="/about" variant="outline" color='secondary' class="mt-2">Read Full Profile</Button>
+					<Button href="/about" variant="outline" color="secondary" class="mt-2"
+						>Read Full Profile</Button
+					>
 				</div>
 			</div>
 		</div>
@@ -323,32 +326,16 @@
 				</p>
 				<h2 class="font-display text-3xl font-bold sm:text-5xl">Recent Studio Works</h2>
 			</div>
-			<Button href="/catalog" variant="outline" color='secondary'>View All Works</Button>
+			<Button href="/catalog" variant="outline" color="secondary">View All Works</Button>
 		</div>
 
 		{#if featuredWork.length > 0}
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
 				{#each featuredWork as item, i (item.catalog_id)}
 					<a
-						href="/catalog/{item.catalog_id}"
-						class="group flex flex-col gap-3 [transform-style:preserve-3d] will-change-transform"
-						onmousemove={tiltCard}
-						onmouseleave={resetCard}
-						use:animate={{
-							type: 'from',
-							opacity: 0,
-							y: 90,
-							scale: 0.85,
-							rotate: i % 2 === 0 ? -6 : 6,
-							ease: 'none',
-							scrollTrigger: {
-								start: `top ${95 - (i % 4) * 4}%`,
-								end: `top ${55 - (i % 4) * 4}%`,
-								scrub: true
-							}
-						}}
+						class="group flex flex-col gap-3 transform-3d will-change-transform"
 					>
-						<div class="relative aspect-[3/4] w-full overflow-hidden rounded-md bg-muted">
+						<div class="relative aspect-3/4 w-full overflow-hidden rounded-md bg-muted">
 							<img
 								src={`${PUBLIC_BACKEND_URL}/${item.image}`}
 								alt={item.name}
@@ -402,13 +389,7 @@
 			<div class="lg:col-span-5">
 				<form class="flex flex-col gap-3 sm:flex-row" onsubmit={(e) => e.preventDefault()}>
 					<Input type="email" placeholder="Enter your email" context="dark" />
-					<Button
-						type="submit"
-						variant="filled"
-						color='white'
-					>
-						Subscribe
-					</Button>
+					<Button type="submit" variant="filled" color="white">Subscribe</Button>
 				</form>
 			</div>
 		</div>
