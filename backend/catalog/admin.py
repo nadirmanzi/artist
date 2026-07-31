@@ -8,6 +8,7 @@ from django.utils import timezone
 from .models import Catalog
 from config.logging import audit_log  # Reusing your logging pattern
 
+
 @admin.register(Catalog)
 class CatalogAdmin(admin.ModelAdmin):
     # Performance optimization: preload the owner user mapping
@@ -20,11 +21,16 @@ class CatalogAdmin(admin.ModelAdmin):
         "category_badge",
         "formatted_price",
         "visibility_badge",
-        "user",
-        "created_at",
+        "is_sold_badge",
     ]
 
-    search_fields = ["name", "description", "catalog_id", "user__email", "user__full_name"]
+    search_fields = [
+        "name",
+        "description",
+        "catalog_id",
+        "user__email",
+        "user__full_name",
+    ]
 
     readonly_fields = [
         "catalog_id",
@@ -33,11 +39,7 @@ class CatalogAdmin(admin.ModelAdmin):
         "updated_at",
     ]
 
-    actions = [
-        "bulk_publish",
-        "bulk_archive",
-        "calculate_total_value"
-    ]
+    actions = ["bulk_publish", "bulk_archive", "calculate_total_value"]
 
     def get_queryset(self, request):
         """Limit view to non-superusers if necessary, or preserve scope."""
@@ -48,7 +50,7 @@ class CatalogAdmin(admin.ModelAdmin):
         """Automatically tag the creator if saving from the admin pane."""
         if not change or not obj.user_id:
             obj.user = request.user
-        
+
         # Explicit model validation invocation before DB commit
         obj.full_clean()
         super().save_model(request, obj, form, change)
@@ -60,28 +62,22 @@ class CatalogAdmin(admin.ModelAdmin):
             return (
                 (
                     "Identity & Classification",
-                    {
-                        "fields": ("name", "category", "description")
-                    },
+                    {"fields": ("name", "category", "medium", "year", "description")},
                 ),
                 (
                     "Financials & Physical Specs",
-                    {
-                        "fields": ("price", "dimensions")
-                    },
+                    {"fields": ("price", "dimensions")},
                 ),
                 (
                     "Media Assets",
                     {
                         "fields": ("image",),
-                        "description": "Upload high-quality portfolio images here."
+                        "description": "Upload high-quality portfolio images here.",
                     },
                 ),
                 (
                     "Workflow",
-                    {
-                        "fields": ("visibility_status",)
-                    },
+                    {"fields": ("visibility_status", "is_sold")},
                 ),
             )
         else:
@@ -94,6 +90,8 @@ class CatalogAdmin(admin.ModelAdmin):
                             "catalog_id",
                             "name",
                             "category",
+                            "medium",
+                            "year",
                             "description",
                         )
                     },
@@ -113,7 +111,7 @@ class CatalogAdmin(admin.ModelAdmin):
                 (
                     "Management Context",
                     {
-                        "fields": ("user", "visibility_status"),
+                        "fields": ("user", "visibility_status", "is_sold"),
                     },
                 ),
                 (
@@ -131,15 +129,17 @@ class CatalogAdmin(admin.ModelAdmin):
         if obj.image:
             return format_html(
                 '<img src="{}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd;" />',
-                obj.image.url
+                obj.image.url,
             )
-        return mark_safe('<span style="color: #bdc3c7; font-size: 11px;">No Image</span>')
+        return mark_safe(
+            '<span style="color: #bdc3c7; font-size: 11px;">No Image</span>'
+        )
 
     def thumbnail_large(self, obj):
         if obj.image:
             return format_html(
                 '<a href="{0}" target="_blank"><img src="{0}" style="max-width: 300px; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" /></a><br/><small style="color: #7f8c8d;">Click image to open original</small>',
-                obj.image.url
+                obj.image.url,
             )
         return "No image uploaded yet."
 
@@ -151,12 +151,13 @@ class CatalogAdmin(admin.ModelAdmin):
             "landscapes": "#27ae60",
             "portraits": "#2980b9",
             "mixed_media": "#8e44ad",
-            "other": "#7f8c8d"
+            "other": "#7f8c8d",
         }
         color = colors.get(obj.category, "#7f8c8d")
         return format_html(
             '<span style="color: {}; font-weight: 600; text-transform: capitalize;">{}</span>',
-            color, obj.get_category_display()
+            color,
+            obj.get_category_display(),
         )
 
     def visibility_badge(self, obj):
@@ -172,27 +173,40 @@ class CatalogAdmin(admin.ModelAdmin):
             '<span style="background-color: #37474f; color: white; padding: 3px 9px; border-radius: 12px; font-size: 10px; font-weight: bold; text-transform: uppercase;">Archived</span>'
         )
 
+    def is_sold_badge(self, obj):
+        if obj.is_sold:
+            return mark_safe(
+                '<span style="background-color: #0066ff; color: white; padding: 3px 9px; border-radius: 12px; font-size: 10px; font-weight: bold; text-transform: uppercase;">Sold</span>'
+            )
+
+        return mark_safe(
+            '<span style="background-color: #e5e5e5; color: black; padding: 3px 9px; border-radius: 12px; font-size: 10px; font-weight: bold; text-transform: uppercase;">On sale</span>'
+        )
+
     thumbnail_preview.short_description = "Preview"
     thumbnail_large.short_description = "Current Asset"
     formatted_price.short_description = "Price"
     category_badge.short_description = "Category"
     visibility_badge.short_description = "Status"
+    is_sold_badge.short_description = "Sold"
 
     # --- Actions Architecture ---
 
     @admin.action(description="Publish selected portfolio assets")
     def bulk_publish(self, request, queryset):
         with transaction.atomic():
-            count = queryset.update(visibility_status=Catalog.VisibilityStatus.PUBLISHED)
+            count = queryset.update(
+                visibility_status=Catalog.VisibilityStatus.PUBLISHED
+            )
             for item in queryset:
                 audit_log.info(
                     action="admin.catalog_publish",
                     message=f"Catalog asset '{item.name}' published manually via Django admin panel.",
                     status="success",
                     source="catalog.admin.CatalogAdmin",
-                    extra = {
-                        'target_catalog_id':str(item.catalog_id),
-                    }
+                    extra={
+                        "target_catalog_id": str(item.catalog_id),
+                    },
                 )
         self.message_user(request, f"Successfully published {count} items.")
 
@@ -206,17 +220,17 @@ class CatalogAdmin(admin.ModelAdmin):
                     message=f"Catalog asset '{item.name}' archived manually via Django admin panel.",
                     status="success",
                     source="catalog.admin.CatalogAdmin",
-                    extra = {
-                        'target_catalog_id':str(item.catalog_id),
-                    }
+                    extra={
+                        "target_catalog_id": str(item.catalog_id),
+                    },
                 )
         self.message_user(request, f"Successfully archived {count} items.")
 
     @admin.action(description="Calculate total value of selected items")
     def calculate_total_value(self, request, queryset):
-        summary = queryset.aggregate(total=Sum('price'))
-        total_value = summary['total'] or 0
+        summary = queryset.aggregate(total=Sum("price"))
+        total_value = summary["total"] or 0
         self.message_user(
-            request, 
-            f"The combined valuation of the {queryset.count()} selected items is: ${total_value:,.2f}"
+            request,
+            f"The combined valuation of the {queryset.count()} selected items is: ${total_value:,.2f}",
         )

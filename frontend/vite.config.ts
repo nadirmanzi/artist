@@ -1,5 +1,5 @@
 import tailwindcss from '@tailwindcss/vite';
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-node';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
@@ -12,18 +12,10 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			adapter: adapter({
-				pages: 'build',
-				assets: 'build',
-				fallback: undefined,
-				precompress: false,
-				strict: true
-			}),
-		}),
-
+			adapter: adapter()
+		})
 	],
 	server: {
-		allowedHosts: ['b782-2c0f-eb68-68b-fe00-dd71-54e2-4485-27b.ngrok-free.app'],
-
+		allowedHosts: ['djwt8b8k-5173.inc1.devtunnels.ms']
 	}
 });

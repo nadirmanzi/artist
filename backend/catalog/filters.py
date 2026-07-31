@@ -39,6 +39,7 @@ class CatalogFilter(django_filters.FilterSet):
     # Text search filters — case-insensitive partial match
     name = django_filters.CharFilter(lookup_expr="icontains")
     description = django_filters.CharFilter(lookup_expr="icontains")
+    medium = django_filters.CharFilter(lookup_expr="icontains")
 
     # Exact choice filters
     category = django_filters.ChoiceFilter(choices=Catalog.CategoryChoices.choices)
@@ -49,6 +50,9 @@ class CatalogFilter(django_filters.FilterSet):
     # Price range — inclusive lower and upper bounds
     price_min = django_filters.NumberFilter(field_name="price", lookup_expr="gte")
     price_max = django_filters.NumberFilter(field_name="price", lookup_expr="lte")
+    
+    # Exact year filter
+    year = django_filters.NumberFilter(field_name="year")
 
     # Date range — filters on created_at timestamp
     created_at_after = django_filters.DateTimeFilter(
@@ -66,11 +70,14 @@ class CatalogFilter(django_filters.FilterSet):
         fields = [
             "name",
             "description",
+            "medium",
             "category",
             "visibility_status",
             "price_min",
             "price_max",
+            "year",
             "created_at_after",
             "created_at_before",
             "user",
+            "is_sold"
         ]

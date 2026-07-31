@@ -10,13 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-from pathlib import Path
-import os
-from corsheaders.defaults import default_headers
-import environ
 import datetime
-from config.logging import LOGGING
+import os
+from pathlib import Path
 
+import environ
+from corsheaders.defaults import default_headers
+
+from config.logging import LOGGING
 
 # Initialize environ
 env = environ.Env(DEBUG=(bool, False))
@@ -70,6 +71,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -80,6 +82,16 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
 ]
+
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 ROOT_URLCONF = "config.urls"
 
@@ -106,8 +118,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("POSTGRES_DB", default="artist_db"),
+        "USER": env("POSTGRES_USER", default="admin"),
+        "PASSWORD": env("POSTGRES_PASSWORD", default="Admin@20266!!"),
+        "HOST": env("POSTGRES_HOST", default="postgres"),
+        "PORT": env("POSTGRES_PORT", default="5432"),
     }
 }
 
@@ -154,8 +170,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:5173")
 
 # CORS Configuration
-CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = [FRONTEND_URL, "http://api.localhost"]
+CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOWED_ORIGINS = [FRONTEND_URL, "http://localhost"]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = (
     *default_headers,
@@ -165,7 +181,7 @@ CORS_ALLOW_HEADERS = (
 )
 
 # CSRF Configuration
-CSRF_TRUSTED_ORIGINS = [FRONTEND_URL, "http://api.localhost", "http://backend:8000", 'https://69c3-2c0f-eb68-68b-fe00-dd71-54e2-4485-27b.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = [FRONTEND_URL]
 
 # Auth user model
 AUTH_USER_MODEL = "users.User"

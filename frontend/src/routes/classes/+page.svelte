@@ -170,7 +170,7 @@
 												class="mt-6 sm:mt-8 tracking-wide flex items-center space-x-4 font-semibold"
 											>
 												<p class="">
-													{formatPrice(program.price)}
+													{formatPrice({price: program.price, currency: "USD"})}
 												</p>
 												<p>/</p>
 												<p>{program.sessions} <span class="text-surface-foreground-muted">{program.sessions > 1 ? 'sessions' : 'session'}</span></p>
@@ -346,7 +346,7 @@
 																>{program.name}</span
 															>
 															<span class="font-mono text-xs sm:text-sm opacity-70"
-																>{formatPrice(program.price)}</span
+																>{formatPrice({price: program.price, currency: "USD"})}</span
 															>
 														</label>
 													</div>

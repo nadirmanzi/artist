@@ -41,5 +41,5 @@ class Command(BaseCommand):
             )
             self.stdout.write(self.style.SUCCESS(f'Successfully created superuser {email}'))
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f'Failed to create superuser: {str(e)}'))
+            self.stdout.write(self.style.ERROR(f'Failed to create superuser: {e!s}'))
             sys.exit(1)

@@ -26,13 +26,17 @@ class Catalog(models.Model):
 
     description = models.TextField(blank=True, null=True)
 
-    price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    price = models.IntegerField(default=0)
 
     category = models.CharField(
         max_length=20, choices=CategoryChoices.choices, null=True, blank=True
     )
 
     dimensions = models.CharField(max_length=255, blank=True, null=True)
+
+    medium = models.CharField(max_length=255, blank=True, null=True)
+    
+    year = models.IntegerField(blank=True, null=True)
 
     image = models.ImageField(upload_to='catalog/images/', blank=True, null=True)
 
@@ -46,6 +50,8 @@ class Catalog(models.Model):
         default=VisibilityStatus.DRAFT,
         db_index=True,
     )
+
+    is_sold = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -67,5 +73,7 @@ class Catalog(models.Model):
     def clean(self):
         if self.price is not None and self.price < 0:
             raise ValidationError({"price": "Price cannot be negative."})
+
+            
 
 

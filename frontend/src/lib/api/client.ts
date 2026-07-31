@@ -1,4 +1,4 @@
-import { PUBLIC_BACKEND_URL } from '$env/static/public';
+import { env } from '$env/dynamic/private'
 import type { ApiError, ApiResult } from './types';
 
 export interface ApiFetchOptions extends RequestInit {
@@ -24,7 +24,7 @@ export async function apiFetch<T>(
 	const normalizedPath = path.startsWith('/') ? path : `/${path}`;
 	const urlPath = normalizedPath.endsWith('/') ? normalizedPath : `${normalizedPath}/`;
 
-	let url = `${PUBLIC_BACKEND_URL || ''}${urlPath}`;
+	let url = `${env.INTERNAL_BACKEND_URL || ''}${urlPath}`;
 
 	if (options.params) {
 		const searchParams = new URLSearchParams(options.params);
@@ -107,7 +107,7 @@ export async function apiFetch<T>(
 			error: {
 				success: false,
 				code: 'connection_error',
-				detail: 'Backend service unreachable.',
+				detail: 'Backend service unreachablesss.',
 				errors: {}
 			},
 			data: null,

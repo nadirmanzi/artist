@@ -4,6 +4,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from django.db.models import Prefetch
 
 from .models import ClassBooking, ClassProgram, StudioClass
 from .serializers import (
@@ -32,11 +33,15 @@ class PublicThrottle(AnonRateThrottle):
     ),
 )
 class StudioClassViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = StudioClass.objects.filter(is_active=True).prefetch_related("programs")
+    queryset = StudioClass.objects.filter(is_active=True).prefetch_related(
+        Prefetch("programs", queryset=ClassProgram.objects.filter(is_active=True))
+    )
     serializer_class = StudioClassSerializer
 
     def get_queryset(self):
-        return StudioClass.objects.filter(is_active=True).prefetch_related("programs")
+        return StudioClass.objects.filter(is_active=True).prefetch_related(
+            Prefetch("programs", queryset=ClassProgram.objects.filter(is_active=True))
+        )
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()

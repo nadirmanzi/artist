@@ -1,15 +1,13 @@
 <script lang="ts">
-	import { PUBLIC_BACKEND_URL } from '$env/static/public';
-
+	import { getImageUrl } from '$lib/utils';
 	import ArrowDown from '@tabler/icons-svelte-runes/icons/arrow-down';
 
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import * as Carousel from '$lib/components/ui/carousel';
 	import { animate } from '$lib/utils/animate';
-	import { gsap } from 'gsap';
 	import type { PageData } from './$types';
-	import Autoplay from "embla-carousel-autoplay";
+	import Autoplay from 'embla-carousel-autoplay';
 
 	import HeroImage from '$lib/assets/hero-4.jpeg';
 	import HeroImage3 from '$lib/assets/hero-3.jpeg';
@@ -20,41 +18,10 @@
 	const carouselImages = $state([
 		{ img: HeroImage2, alt: 'Abstract artwork 1' },
 		{ img: HeroImage, alt: 'Abstract artwork 2' },
-		{ img: HeroImage3, alt: 'Abstract artwork 3' },
+		{ img: HeroImage3, alt: 'Abstract artwork 3' }
 	]);
 
 	const featuredWork = $derived((data.catalogs ?? []).slice(0, 4));
-
-	// Magnetic tilt for featured work cards — cursor-driven, purely additive.
-	function tiltCard(e: MouseEvent) {
-		const card = e.currentTarget as HTMLElement;
-		const rect = card.getBoundingClientRect();
-		const px = (e.clientX - rect.left) / rect.width;
-		const py = (e.clientY - rect.top) / rect.height;
-
-		gsap.to(card, {
-			rotateX: (py - 0.5) * -12,
-			rotateY: (px - 0.5) * 12,
-			scale: 1.03,
-			duration: 0.5,
-			ease: 'power2.out',
-			transformPerspective: 700,
-			transformOrigin: 'center'
-		} as gsap.TweenVars);
-	}
-
-	function resetCard(e: MouseEvent) {
-		gsap.to(
-			e.currentTarget as HTMLElement,
-			{
-				rotateX: 0,
-				rotateY: 0,
-				scale: 1,
-				duration: 0.7,
-				ease: 'power3.out'
-			} as gsap.TweenVars
-		);
-	}
 </script>
 
 <svelte:head>
@@ -79,7 +46,11 @@
 			}
 		}}
 	>
-		<Carousel.Root class="h-full w-full" opts={{direction: 'ltr', loop: true}} plugins={[Autoplay({delay:4000})]}>
+		<Carousel.Root
+			class="h-full w-full"
+			opts={{ direction: 'ltr', loop: true }}
+			plugins={[Autoplay({ delay: 4000 })]}
+		>
 			<Carousel.Content class="h-full">
 				{#each carouselImages as image (image.img)}
 					<Carousel.Item class="h-dvh w-full shrink-0 pl-0">
@@ -332,24 +303,22 @@
 		{#if featuredWork.length > 0}
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
 				{#each featuredWork as item, i (item.catalog_id)}
-					<a
-						class="group flex flex-col gap-3 transform-3d will-change-transform"
-					>
+					<div class="group flex flex-col gap-3 transform-3d will-change-transform">
 						<div class="relative aspect-3/4 w-full overflow-hidden rounded-md bg-muted">
 							<img
-								src={`${PUBLIC_BACKEND_URL}/${item.image}`}
-								alt={item.name}
+								src={getImageUrl(item.image)}
+								alt={item.image}
 								class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
 							/>
 						</div>
 						<div class="flex items-baseline justify-between pt-2">
-							<h3 class="font-display text-base font-semibold">{item.name}</h3>
+							<h3 class="font-display text-base font-semibold">{item.image}</h3>
 							<span class="text-xs font-mono text-muted-foreground">
 								#{String(i + 1).padStart(2, '0')}
 							</span>
 						</div>
 						<p class="text-xs text-muted-foreground">{item.category ?? 'Original Artwork'}</p>
-					</a>
+					</div>
 				{/each}
 			</div>
 		{:else}

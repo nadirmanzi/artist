@@ -1,6 +1,7 @@
 import { refreshToken, getUserProfile } from '$lib/server/auth/session';
 import type { Handle, HandleFetch } from '@sveltejs/kit';
-import { PUBLIC_BACKEND_URL } from '$env/static/public';
+import { env } from '$env/dynamic/private';
+
 
 export const handle: Handle = async ({ event, resolve }) => {
     let access_token = event.cookies.get('access_token');
@@ -62,7 +63,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
     // Automatically attach the Bearer token to all internal server-side fetches targeting the backend
-    if (request.url.startsWith(PUBLIC_BACKEND_URL || '')) {
+    if (request.url.startsWith(env.INTERNAL_BACKEND_URL || '')) {
         const access_token = event.cookies.get('access_token');
         if (access_token && !request.headers.has('Authorization')) {
             request.headers.set('Authorization', `Bearer ${access_token}`);

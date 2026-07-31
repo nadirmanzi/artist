@@ -90,8 +90,11 @@ export interface CatalogFilter {
 	name?: string;
 	description?: string;
 	category?: string;
+	medium: string;
+	year: number;
 	visibility_status?: string;
 	price_min?: number | string;
+	is_sold: boolean;
 	price_max?: number | string;
 	created_at_after?: string;
 	created_at_before?: string;
@@ -108,6 +111,9 @@ export interface Catalog {
 	price: string | number;
 	category: string | null;
 	dimensions: string | null;
+	year: number | null;
+	is_sold: boolean;
+	medium: string | null;
 	image: string | null;
 	user: EmbeddedUser;
 	visibility_status: 'draft' | 'published' | 'archived';

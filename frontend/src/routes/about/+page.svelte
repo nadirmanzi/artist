@@ -58,7 +58,7 @@
 
 		<p class="font-display font-semibold text-3xl sm:text-4xl">Studio Mugire</p>
 
-		<div class="space-y-6 py-8 border-b border-black/30 text-surface-foreground-muted">
+		<div class="space-y-6 py-8 border-b border-black/30 text-foreground">
 			<p>
 				Studio Mugire is a contemporary art studio and gallery based in Kigali, Rwanda, founded by
 				artist David Mugire. The studio brings together original artworks, exhibitions, creative
@@ -81,7 +81,7 @@
 		<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 py-6">
 			{#each [{ label: 'Practice', value: 'Landscape Paintings & Mixed Media' }, { label: 'Location', value: 'Kigali, Rwanda' }, { label: 'Founded', value: '2022' }] as stat, i (stat.label)}
 				<div
-					class="flex flex-col space-y-2 sm:space-y-4"
+					class="flex flex-col space-y-2 sm:space-y-4 text-right"
 					use:animate={{
 						type: 'from',
 						opacity: 0,
@@ -95,8 +95,8 @@
 						}
 					}}
 				>
-					<p class="text-surface-foreground-muted">{stat.label}</p>
-					<p class="font-medium">{stat.value}</p>
+					<p class="text-secondary font-semibold">{stat.label}</p>
+					<p class="">{stat.value}</p>
 				</div>
 			{/each}
 		</div>
@@ -107,26 +107,58 @@
 <div
 	class="px-6 sm:px-10 pt-12 md:pt-20 pb-16 md:pb-10 grid grid-cols-1 lg:grid-cols-2 gap-10 border-b bg-surface border-black/10"
 >
-	<div
-		class="space-y-4 px-0 lg:px-10 flex flex-col justify-center order-2 lg:order-1"
-		use:animate={{
-			type: 'from',
-			opacity: 0,
-			x: -70,
-			ease: 'none',
-			scrollTrigger: {
-				start: 'top 100%',
-				end: 'top 90%',
-				scrub: true
-			}
-		}}
-	>
-		<p class="text-surface-foreground-muted text-sm">02 / The Artist</p>
+	<div class="space-y-4 px-0 lg:px-10 flex flex-col justify-center order-2 lg:order-1">
+		<!-- Header / Subtitle -->
+		<p
+			class="text-surface-foreground-muted text-sm"
+			use:animate={{
+				type: 'from',
+				opacity: 0,
+				x: -20,
+				ease: 'none',
+				scrollTrigger: {
+					start: 'top 95%',
+					end: 'top 85%',
+					scrub: true
+				}
+			}}
+		>
+			02 / The Artist
+		</p>
 
-		<p class="font-display font-semibold text-3xl sm:text-4xl">Mugire Peace David</p>
+		<p
+			class="font-display font-semibold text-3xl sm:text-4xl"
+			use:animate={{
+				type: 'from',
+				opacity: 0,
+				y: 30,
+				ease: 'none',
+				scrollTrigger: {
+					start: 'top 90%',
+					end: 'top 80%',
+					scrub: true
+				}
+			}}
+		>
+			Mugire Peace David
+		</p>
 
-		<div class="space-y-6 py-8 text-surface-foreground-muted">
-			<div class="space-y-4 border-b border-surface-border py-4">
+		<div class="space-y-6 py-8 text-foreground">
+			<!-- Block 1: The Journey -->
+			<div
+				class="space-y-4 border-b border-surface-border py-4"
+				use:animate={{
+					type: 'from',
+					opacity: 0,
+					y: 40,
+					ease: 'none',
+					scrollTrigger: {
+						start: 'top 85%',
+						end: 'top 65%',
+						scrub: true
+					}
+				}}
+			>
 				<p class="text-secondary font-semibold font-display">The Journey</p>
 				<p>
 					Born and based in Rwanda, David Mugire developed a deep connection with art through his
@@ -138,7 +170,21 @@
 				</p>
 			</div>
 
-			<div class="space-y-4 border-b border-surface-border py-4">
+			<!-- Block 2: Artistic Practice -->
+			<div
+				class="space-y-4 border-b border-surface-border py-4"
+				use:animate={{
+					type: 'from',
+					opacity: 0,
+					y: 40,
+					ease: 'none',
+					scrollTrigger: {
+						start: 'top 80%',
+						end: 'top 60%',
+						scrub: true
+					}
+				}}
+			>
 				<p class="text-secondary font-semibold font-display">Artistic Practice</p>
 				<p>
 					Working primarily with palette knives and mixed media techniques, David creates richly
@@ -150,7 +196,21 @@
 				</p>
 			</div>
 
-			<div class="space-y-4 border-b border-surface-border py-4">
+			<!-- Block 3: Inspiration & Themes -->
+			<div
+				class="space-y-4 border-b border-surface-border py-4"
+				use:animate={{
+					type: 'from',
+					opacity: 0,
+					y: 40,
+					ease: 'none',
+					scrollTrigger: {
+						start: 'top 75%',
+						end: 'top 55%',
+						scrub: true
+					}
+				}}
+			>
 				<p class="font-semibold font-display text-secondary">Inspiration & Themes</p>
 
 				<div class="space-y-2">
@@ -167,7 +227,21 @@
 				</div>
 			</div>
 
-			<div class="space-y-4 py-4">
+			<!-- Block 4: Selected Exhibitions -->
+			<div
+				class="space-y-4 py-4"
+				use:animate={{
+					type: 'from',
+					opacity: 0,
+					y: 40,
+					ease: 'none',
+					scrollTrigger: {
+						start: 'top 70%',
+						end: 'top 50%',
+						scrub: true
+					}
+				}}
+			>
 				<p class="font-semibold text-secondary font-display">Selected Exhibitions</p>
 
 				<ul class="space-y-2 list-disc px-4">
@@ -208,10 +282,7 @@
 	</div>
 
 	<div class="grid grid-cols-1 md:grid-cols-3 rounded-lg overflow-hidden gap-8 md:gap-0">
-		{#each [
-		{ title: 'Projects', copy: "David Mugire’s work extends beyond the studio through projects in hospitality, literature, community engagement, and international cultural initiatives, including SINGITA KWITONDA LODGE, UNESCO Headquarters in Paris, Jacaranda by GAËL FAYE, and UNHCR Rwanda." },
-		{ title: 'Collaborations', copy: "At Studio Mugire, we believe collaboration creates meaningful connections between art, people, and ideas. We welcome partnerships with galleries, cultural institutions, hospitality brands, designers, schools, and organizations." },
-		{ title: 'Artist Talks & Lectures', copy: "David Mugire has been invited to share his artistic journey through talks and lectures at ACADÉMIE MECHELEN, ACADÉMIE POPERINGE, and GREEN HILLS ACADEMY, inspiring conversations around art, creativity, and contemporary practice." }] as practice, i (practice.title)}
+		{#each [{ title: 'Projects', copy: 'David Mugire’s work extends beyond the studio through projects in hospitality, literature, community engagement, and international cultural initiatives, including SINGITA KWITONDA LODGE, UNESCO Headquarters in Paris, Jacaranda by GAËL FAYE, and UNHCR Rwanda.' }, { title: 'Collaborations', copy: 'At Studio Mugire, we believe collaboration creates meaningful connections between art, people, and ideas. We welcome partnerships with galleries, cultural institutions, hospitality brands, designers, schools, and organizations.' }, { title: 'Artist Talks & Lectures', copy: 'David Mugire has been invited to share his artistic journey through talks and lectures at ACADÉMIE MECHELEN, ACADÉMIE POPERINGE, and GREEN HILLS ACADEMY, inspiring conversations around art, creativity, and contemporary practice.' }] as practice, i (practice.title)}
 			<div
 				role="button"
 				tabindex="0"
