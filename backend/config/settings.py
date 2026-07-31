@@ -127,7 +127,7 @@ DATABASES = {
 
     #}
 
-    'default': env.db('POSTGRES_URL')
+    'default': env.db('POSTGRES_URL', default='postgres://dummy:dummy@localhost:5432/dummy')
 }
 
 
