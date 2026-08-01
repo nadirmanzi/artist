@@ -3,7 +3,7 @@ Django logging configuration.
 
 Defines the LOGGING dict used by Django with:
 - Console handler (development-friendly format)
-- Structured JSON handlers to stdout/stderr (captured by Railway's log system)
+- Structured JSON handlers to stdout/stderr (captured by Railway's log system). 
 """
 import logging
 
