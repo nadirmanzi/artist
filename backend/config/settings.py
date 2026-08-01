@@ -117,16 +117,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    #"default": {
-        #"ENGINE": "django.db.backends.postgresql",
-        #"NAME": env("POSTGRES_DB", default="artist_db"),
-        #"USER": env("POSTGRES_USER", default="admin"),
-        #"PASSWORD": env("POSTGRES_PASSWORD", default="Admin@20266!!"),
-        #"HOST": env("POSTGRES_HOST", default="postgres"),
-        #"PORT": env("POSTGRES_PORT", default="5432"),
-
-    #}
-
     'default': env.db('POSTGRES_URL', default='postgres://dummy:dummy@localhost:5432/dummy')
 }
 
