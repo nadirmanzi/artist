@@ -160,7 +160,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-FRONTEND_URL = env("FRONTEND_URL")
+FRONTEND_URL = env("FRONTEND_URL", default='http://localhost:5173')
 
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
