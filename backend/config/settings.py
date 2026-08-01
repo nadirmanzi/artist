@@ -173,7 +173,7 @@ CORS_ALLOW_HEADERS = (
 )
 
 # CSRF Configuration
-CSRF_TRUSTED_ORIGINS = [FRONTEND_URL, env('ALLOWED_HOSTS')]
+CSRF_TRUSTED_ORIGINS = [FRONTEND_URL, env('ALLOWED_HOSTS', default='').split(',')]
 
 # Auth user model
 AUTH_USER_MODEL = "users.User"
