@@ -23,19 +23,23 @@ FROM python:3.12-slim AS runner
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PATH="/opt/venv/bin:$PATH" \
-    DJANGO_SETTINGS_MODULE=config.settings
+    DJANGO_SETTINGS_MODULE=config.settings \
+    HOME=/home/django
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq5 \
     netcat-openbsd \
     tini \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /opt/venv /opt/venv
 
 RUN addgroup --system --gid 1000 django && \
-    adduser --system --uid 1000 --group django
+    adduser --system --uid 1000 --gid 1000 --home /home/django --shell /usr/sbin/nologin django && \
+    mkdir -p /home/django && \
+    chown django:django /home/django
 
 RUN mkdir -p /app/staticfiles /app/media/catalog /app/logs && \
     chown -R django:django /app
@@ -45,21 +49,31 @@ COPY --chown=django:django scripts/entrypoint.sh ./scripts/
 RUN chmod +x ./scripts/entrypoint.sh
 
 # --- Build-time static collection ---
-# SECRET_KEY here is a throwaway string scoped to this single RUN layer only —
-# it's needed purely so settings.py imports cleanly during collectstatic.
-# It is NOT written to ENV, so it does not persist in the final image config
-# and is never confused with the real SECRET_KEY, which comes from .env at
-# container runtime via --env-file / compose env_file.
+# SECRET_KEY and FRONTEND_URL here are throwaway values scoped to this single
+# RUN layer only — needed purely so settings.py imports cleanly during
+# collectstatic. Neither persists via ENV, so they never leak into the final
+# image config and are never confused with the real runtime values, which
+# come from Railway's environment variables / .env at container start.
 RUN SECRET_KEY="build-time-placeholder-unused-at-runtime" \
+    FRONTEND_URL="http://build-time-placeholder" \
     python manage.py collectstatic --noinput
 
 USER django
 
+# EXPOSE is informational only — the real bind port is dynamic via $PORT,
+# set by Railway at runtime. Docker/Compose ignore this for actual routing.
 EXPOSE 8000
 
+# Railway uses its own platform-level healthcheck (Settings > Healthcheck Path)
+# against whatever port it assigns, so this HEALTHCHECK mainly matters for
+# local `docker compose` runs. curl resolves the same dynamic $PORT gunicorn
+# binds to below, so the two never drift out of sync with each other.
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-  CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health/').status==200 else 1)" || exit 1
+  CMD sh -c 'curl -f "http://localhost:${PORT:-8000}/health/" || exit 1'
 
 ENTRYPOINT ["/usr/bin/tini", "--", "/app/scripts/entrypoint.sh"]
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
+# Bind to Railway's assigned $PORT if present, falling back to 8000 for local
+# Compose runs. Single worker + threads is safe for either Postgres or SQLite
+# at low traffic; bump --workers if traffic grows and you're on Postgres.
+CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 1 --threads 4 --worker-class gthread"]
