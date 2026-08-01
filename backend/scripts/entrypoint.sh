@@ -4,10 +4,24 @@ set -eu
 # Ensure media and logs directories exist (static files are baked in at build time)
 mkdir -p /app/media/catalog /app/logs
 
+# --- Extract DB Host & Port from POSTGRES_URL ---
+if [ -z "${POSTGRES_URL:-}" ]; then
+  echo "ERROR: POSTGRES_URL environment variable is not set." >&2
+  exit 1
+fi
+
+DB_HOST=$(python -c "import os, urllib.parse; print(urllib.parse.urlparse(os.environ['POSTGRES_URL']).hostname or '')")
+DB_PORT=$(python -c "import os, urllib.parse; print(urllib.parse.urlparse(os.environ['POSTGRES_URL']).port or 5432)")
+
+if [ -z "$DB_HOST" ]; then
+  echo "ERROR: Failed to parse host from POSTGRES_URL." >&2
+  exit 1
+fi
+
 # --- Wait for postgres with a bounded timeout ---
-echo "Waiting for postgres at ${POSTGRES_HOST}:${POSTGRES_PORT}..."
+echo "Waiting for postgres at ${DB_HOST}:${DB_PORT}..."
 timeout=30
-until nc -z "$POSTGRES_HOST" "$POSTGRES_PORT" || [ "$timeout" -le 0 ]; do
+until nc -z "$DB_HOST" "$DB_PORT" || [ "$timeout" -le 0 ]; do
   timeout=$((timeout - 1))
   sleep 1
 done
