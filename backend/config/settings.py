@@ -172,8 +172,17 @@ CORS_ALLOW_HEADERS = (
     "x-password-reset-key",
 )
 
+
 # CSRF Configuration
-CSRF_TRUSTED_ORIGINS = [FRONTEND_URL, env.list("CSRF_TRUSTED_ORIGINS", default=[])]
+raw_origins = [FRONTEND_URL] + env.list("CSRF_TRUSTED_ORIGINS", default=[])
+
+# Strip whitespace, quotes, and trailing slashes from every entry
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip().strip("'\"").rstrip("/")
+    for origin in raw_origins
+    if origin
+]
+
 
 # Auth user model
 AUTH_USER_MODEL = "users.User"
