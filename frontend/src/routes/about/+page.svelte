@@ -22,7 +22,7 @@
 	<div
 		class="h-[50dvh] sm:h-[60dvh] lg:h-[80dvh] w-full flex items-center justify-center overflow-hidden"
 	>
-		<img src={StudioImage} alt="The Studio" class="h-full w-full lg:w-[80%] object-cover" />
+		<img src={StudioImage} alt="The Studio" class="h-full w-full lg:w-[80%] object-cover rounded-3xl" />
 	</div>
 
 	<div
@@ -258,7 +258,7 @@
 	<div
 		class="h-[50dvh] sm:h-[60dvh] sm:sticky sm:top-24 lg:h-[80dvh] w-full flex items-center justify-center order-1 lg:order-2 overflow-hidden"
 	>
-		<img src={ArtistImage} alt="Mugire Peace David" class="h-full w-full lg:w-[80%] object-cover" />
+		<img src={ArtistImage} alt="Mugire Peace David" class="h-full w-full lg:w-[80%] object-cover rounded-3xl" />
 	</div>
 </div>
 
