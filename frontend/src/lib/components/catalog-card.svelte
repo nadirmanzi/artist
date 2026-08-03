@@ -48,7 +48,7 @@
 </script>
 
 <div
-	class={`space-y-6 pb-10 ${index < artwork.length - 1 ? 'border-b md:border-b-0 border-black/30' : ''} ${index < artwork.length - (artwork.length % 3 || 3) ? 'md:border-b md:border-black/30' : ''} rounded-3xl`}
+	class={`space-y-6 pb-10 ${index < artwork.length - 1 ? 'border-b md:border-b-0 border-black/30' : ''} ${index < artwork.length - (artwork.length % 3 || 3) ? 'md:border-b md:border-black/30' : ''} rounded-3xl overflow-hidden`}
 >
 	<img
 		src={getImageUrl(artwork.image)}
