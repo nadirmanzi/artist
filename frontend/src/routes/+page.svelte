@@ -12,6 +12,7 @@
 	import HeroImage from '$lib/assets/hero-4.jpeg';
 	import HeroImage3 from '$lib/assets/hero-3.jpeg';
 	import HeroImage2 from '$lib/assets/art-2.jpeg';
+	import CatalogCard from '$lib/components/catalog-card.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -302,23 +303,8 @@
 
 		{#if featuredWork.length > 0}
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-				{#each featuredWork as item, i (item.catalog_id)}
-					<div class="group flex flex-col gap-3 transform-3d will-change-transform">
-						<div class="relative aspect-3/4 w-full overflow-hidden rounded-md bg-muted">
-							<img
-								src={getImageUrl(item.image)}
-								alt={item.image}
-								class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-							/>
-						</div>
-						<div class="flex items-baseline justify-between pt-2">
-							<h3 class="font-display text-base font-semibold">{item.image}</h3>
-							<span class="text-xs font-mono text-muted-foreground">
-								#{String(i + 1).padStart(2, '0')}
-							</span>
-						</div>
-						<p class="text-xs text-muted-foreground">{item.category ?? 'Original Artwork'}</p>
-					</div>
+				{#each featuredWork as artwork, index (artwork.catalog_id)}
+					<CatalogCard {artwork} {index} />
 				{/each}
 			</div>
 		{:else}

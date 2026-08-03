@@ -34,7 +34,7 @@
 {/if}
 
 <nav
-	class="bg-foreground/60 z-50 border border-foreground/20 shadow-lg w-full lg:w-[65%] rounded-none md:lg:rounded-full transition-all duration-300 relative isolate"
+	class="bg-foreground/60 backdrop-blur-3xl z-50 border border-foreground/20 shadow-lg w-full lg:w-[65%] rounded-none md:lg:rounded-full transition-all duration-300 relative"
 >
 	<!-- Main Header Bar -->
 	<div class="h-15 flex items-center justify-between pr-4 pl-8 relative z-10">
@@ -143,10 +143,3 @@
 		</div>
 	{/if}
 </nav>
-
-<style>
-	nav {
-		backdrop-filter: blur(35px);
-		-webkit-backdrop-filter: blur(35px);
-	}
-</style>

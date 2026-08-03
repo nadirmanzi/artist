@@ -6,11 +6,12 @@
     const words = $derived(text.trim().split(/\s+/));
 </script>
 
-<div class="h-[22rem] sm:h-[26rem] md:h-[30rem] relative w-full overflow-hidden bg-background">
+<div class="h-88 sm:h-104 md:h-120 relative w-full overflow-hidden bg-background">
     <div class="h-full w-full">
         <img
             src={image}
             alt={text}
+            loading='eager'
             class="h-full w-full object-cover will-change-transform"
             use:animate={[
                 {
