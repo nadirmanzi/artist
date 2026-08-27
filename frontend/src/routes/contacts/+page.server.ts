@@ -31,7 +31,7 @@ export const actions: Actions = {
             {
                 name,
                 email,
-                phone: phone || null,
+                phone_number: phone || null,
                 message
             },
             fetch

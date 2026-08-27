@@ -4,15 +4,25 @@ import { error, fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-    const res = await listCatalogs(fetch);
+	try {
+		const res = await listCatalogs(fetch);
 
-    if (!res.ok) {
-        throw error(res.status || 500, res.error?.detail || 'Failed to load catalog');
-    }
+		if (!res.ok) {
+			throw error(
+				res.status || 500,
+				res.error?.detail || 'Failed to load catalog. Backend service is currently unavailable.'
+			);
+		}
 
-    return {
-        catalog: res.data.catalogs
-    };
+		return {
+			catalog: res.data?.catalogs ?? []
+		};
+	} catch (err: any) {
+		if (err && typeof err === 'object' && 'status' in err) {
+			throw err;
+		}
+		throw error(500, 'Unable to connect to the studio backend. Please check server connection.');
+	}
 };
 
 export const actions: Actions = {

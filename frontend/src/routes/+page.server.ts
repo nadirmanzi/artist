@@ -1,15 +1,25 @@
-import { listCatalogs } from '$lib/api/catalog/management'; // adjust path to your catalog api file
+import { listCatalogs } from '$lib/api/catalog/management';
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-    const res = await listCatalogs(fetch);
+	try {
+		const res = await listCatalogs(fetch);
 
-    if (!res.ok) {
-        return { catalogs: [] };
-    }
+		if (!res.ok) {
+			throw error(
+				res.status || 500,
+				res.error?.detail || 'The studio catalog service is currently unavailable.'
+			);
+		}
 
-    // res.data is CatalogListResponse ({ catalogs: Catalog[] })
-    return {
-        catalogs: res.data.catalogs
-    };
+		return {
+			catalogs: res.data?.catalogs ?? []
+		};
+	} catch (err: any) {
+		if (err && typeof err === 'object' && 'status' in err) {
+			throw err;
+		}
+		throw error(500, 'Unable to connect to the studio backend. Please check server connection.');
+	}
 };
