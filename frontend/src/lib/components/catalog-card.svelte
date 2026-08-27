@@ -44,11 +44,11 @@
 		return form.fullName.trim().length > 0 && /^\S+@\S+\.\S+$/.test(form.email);
 	}
 
-    const form = $derived(getFormState(index));
+	const form = $derived(getFormState(index));
 </script>
 
 <div
-	class={`space-y-6 pb-10 ${index < artwork.length - 1 ? 'border-b md:border-b-0 border-black/30' : ''} ${index < artwork.length - (artwork.length % 3 || 3) ? 'md:border-b md:border-black/30' : ''} rounded-3xl overflow-hidden`}
+	class={`space-y-6 pb-10 ${index < artwork.length - 1 ? 'border-b md:border-b-0 border-black/30' : ''} ${index < artwork.length - (artwork.length % 3 || 3) ? 'md:border-b md:border-black/30' : ''} overflow-hidden`}
 >
 	<img
 		src={getImageUrl(artwork.image)}
@@ -119,9 +119,7 @@
 						class="z-60 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85dvh] h-[90dvh] md:h-[75%] min-w-[95%] md:min-w-[90%] grid grid-cols-1 md:grid-cols-5 gap-4 p-0 overflow-y-auto md:overflow-hidden bg-transparent rounded-3xl"
 					>
 						<!-- Left Column: Artwork Specs & Preview -->
-						<div
-							class="md:col-span-3 bg-surface overflow-y-auto p-6 md:p-8 space-y-6 min-h-62.5 md:min-h-0"
-						>
+						<div class="md:col-span-3 bg-surface overflow-y-auto space-y-6 min-h-62.5 md:min-h-0">
 							<div class="relative w-full h-full min-h-62.5 overflow-hidden">
 								<img
 									src={getImageUrl(artwork.image)}

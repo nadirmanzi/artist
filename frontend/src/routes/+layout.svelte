@@ -14,26 +14,24 @@
 		}
 	});
 
-	onNavigate((navigation) => {
-		// If the user clicked a link to the exact same pathname,
-		// cancel the view transition entirely.
-		if (navigation.from?.url.pathname === navigation.to?.url.pathname) {
-			return;
-		}
+	//onNavigate((navigation) => {
+	// If the user clicked a link to the exact same pathname,
+	// cancel the view transition entirely.
+	//if (navigation.from?.url.pathname === navigation.to?.url.pathname) {
+	//		return;
+	//	}
 
-		// Otherwise, allow the transition to trigger
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve();
-				await navigation.complete;
-			});
-		});
-	});
+	// Otherwise, allow the transition to trigger
+	//	return new Promise((resolve) => {
+	//		document.startViewTransition(async () => {
+	//			resolve();
+	//			await navigation.complete;
+	//	});
+	//	});
+	//	});
 </script>
 
-<header
-	class="fixed w-screen z-[999] lg:p-4 flex items-center justify-center"
->
+<header class="fixed w-screen z-[999] lg:p-4 flex items-center justify-center">
 	<MainNavigation />
 </header>
 

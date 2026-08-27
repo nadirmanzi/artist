@@ -107,7 +107,7 @@ export async function apiFetch<T>(
 			error: {
 				success: false,
 				code: 'connection_error',
-				detail: 'Backend service unreachablesss.',
+				detail: 'Backend service is unreachable.',
 				errors: {}
 			},
 			data: null,

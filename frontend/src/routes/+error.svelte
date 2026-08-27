@@ -54,10 +54,11 @@
 	const isBackendError = $derived(status >= 500);
 
 	const errorMessage = $derived(
-		page.error?.message ||
-			(is404
-				? 'The canvas or artwork you are looking for has left the frame, or has not been painted yet.'
-				: 'The studio backend service is currently taking a pause or undergoing maintenance.')
+		is404
+			? 'The canvas or artwork you are looking for has left the frame, or has not been painted yet.'
+			: isBackendError
+				? 'The studio backend service is currently taking a pause or undergoing maintenance.'
+				: page.error?.message
 	);
 
 	function reloadPage() {
@@ -82,44 +83,16 @@
 <div
 	class="relative min-h-dvh w-full overflow-hidden bg-background text-white flex items-center justify-center px-4 py-16 selection:bg-white selection:text-black"
 >
-	<!-- Dynamic Ambient Radial Background Glow -->
-	<div
-		class="pointer-events-none absolute inset-0 transition-all duration-700 ease-out z-0"
-		style="background: radial-gradient(circle at 50% 40%, {currentAccent.glow} 0%, rgba(10, 10, 12, 0.95) 70%);"
-	></div>
-
-	<!-- Background Abstract Grid & Gallery Frame Outline -->
-	<div class="pointer-events-none absolute inset-0 z-0 opacity-20 flex items-center justify-center">
-		<div
-			class="w-[85vw] max-w-4xl h-[70vh] border border-dashed rounded-3xl transition-colors duration-700"
-			style="border-color: {currentAccent.border};"
-		></div>
-	</div>
-
-	<!-- Ambient Floating Palette Swatches -->
-	<div class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-		<div
-			class="absolute top-1/4 left-[10%] size-72 rounded-full blur-3xl opacity-30 transition-all duration-1000"
-			style="background: {currentAccent.hex};"
-		></div>
-		<div
-			class="absolute bottom-1/4 right-[10%] size-96 rounded-full blur-3xl opacity-20 transition-all duration-1000"
-			style="background: {currentAccent.hex};"
-		></div>
-	</div>
-
 	<!-- Central Main Content Glass Card -->
 	<div
-		in:fly={{ y: 30, duration: 600 }}
-		class="relative z-10 w-full max-w-2xl bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 sm:p-14 shadow-2xl flex flex-col items-center text-center gap-6 overflow-hidden"
+		in:fly|global={{ y: 30, duration: 600 }}
+		class="relative z-10 w-full max-w-2xl bg-transparent flex flex-col items-center text-center gap-6 overflow-hidden"
 	>
 		<!-- Top Gallery Tag / Status Badge -->
 		<div
-			class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs tracking-[0.2em] uppercase text-white/80 font-medium"
+			class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs tracking-[0.2em] uppercase text-foreground font-medium"
 		>
-			<span
-				class="size-2 rounded-full animate-pulse transition-colors duration-500"
-				style="background-color: {currentAccent.hex};"
+			<span class="size-2 rounded-full animate-pulse transition-colors bg-destructive duration-300"
 			></span>
 			<span>Studio Mugire • Ref #{status}</span>
 		</div>
@@ -127,26 +100,26 @@
 		<!-- Big Creative Display Number -->
 		<div class="relative my-2">
 			<h1
-				class="font-display text-8xl sm:text-9xl font-extralight tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-white via-white/90 to-white/20 select-none"
+				class="font-display text-8xl sm:text-9xl font-extralight tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-foreground via-foreground/90 to-foreground/20 select-none"
 			>
 				{status}
 			</h1>
 
 			<!-- Decorative Overlaid Brush Icon / Sparkle -->
 			<div
-				class="absolute -top-3 -right-4 p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 shadow-lg"
-				in:scale={{ duration: 400, delay: 200 }}
+				class="absolute -top-3 -right-4 p-2 text-destructive rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 shadow-lg"
+				in:scale|global={{ duration: 400, delay: 200 }}
 			>
 				{#if is404}
-					<Sparkles class="size-6 sm:size-7" style="color: {currentAccent.hex}" />
+					<Sparkles class="size-6 sm:size-7 text-destructive" />
 				{:else}
-					<AlertTriangle class="size-6 sm:size-7 text-amber-400" />
+					<AlertTriangle class="size-6 sm:size-7 text-destructive" />
 				{/if}
 			</div>
 		</div>
 
 		<!-- Main Error Heading & Subtext -->
-		<div class="space-y-3 max-w-lg">
+		<div class="space-y-3 max-w-lg text-foreground">
 			<h2 class="font-display text-3xl sm:text-4xl font-normal leading-snug">
 				{#if is404}
 					Uncharted Canvassssss
@@ -157,41 +130,10 @@
 				{/if}
 			</h2>
 
-			<p class="text-white/70 text-base sm:text-lg font-light leading-relaxed">
+			<p class="text-base sm:text-lg font-light text-surface-foreground-muted leading-relaxed">
 				{errorMessage}
 			</p>
 		</div>
-
-		<!-- Interactive Canvas Palette Switcher for 404 (Creative Studio Feature) -->
-		{#if is404}
-			<div
-				in:fade={{ duration: 400, delay: 300 }}
-				class="w-full pt-2 pb-1 border-t border-white/10 flex flex-col items-center gap-3"
-			>
-				<div
-					class="flex items-center gap-2 text-xs font-light text-white/60 tracking-wider uppercase"
-				>
-					<Palette class="size-3.5" />
-					<span>Mix Studio Canvas Accent ({currentAccent.name})</span>
-				</div>
-
-				<div class="flex items-center gap-3">
-					{#each Object.entries(accents) as [key, item]}
-						<button
-							type="button"
-							onclick={() => (activeAccentKey = key as AccentKey)}
-							aria-label={`Select ${item.name}`}
-							class="size-6 rounded-full transition-all duration-300 relative focus:outline-none flex items-center justify-center"
-							style="background-color: {item.hex}; opacity: {activeAccentKey === key ? 1 : 0.6}"
-						>
-							{#if activeAccentKey === key}
-								<span class="size-2 rounded-full bg-white shadow-xs"></span>
-							{/if}
-						</button>
-					{/each}
-				</div>
-			</div>
-		{/if}
 
 		<!-- Primary & Secondary Navigation Actions -->
 		<div class="w-full pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -199,7 +141,7 @@
 				<Button
 					onclick={reloadPage}
 					variant="filled"
-					color="white"
+					color="black"
 					size="lg"
 					class="w-full sm:w-auto"
 				>
@@ -211,7 +153,7 @@
 			<Button
 				href="/"
 				variant={isBackendError ? 'outline' : 'filled'}
-				color="white"
+				color="black"
 				size="lg"
 				class="w-full sm:w-auto"
 			>
@@ -220,12 +162,12 @@
 			</Button>
 
 			{#if is404}
-				<Button href="/catalog" variant="outline" color="white" size="lg" class="w-full sm:w-auto">
+				<Button href="/catalog" variant="outline" color="black" size="lg" class="w-full sm:w-auto">
 					<Artboard class="size-4" />
 					<span>Explore Collection</span>
 				</Button>
 
-				<Button href="/classes" variant="outline" color="white" size="lg" class="w-full sm:w-auto">
+				<Button href="/classes" variant="outline" color="black" size="lg" class="w-full sm:w-auto">
 					<School class="size-4" />
 					<span>Book a Class</span>
 				</Button>
@@ -237,7 +179,7 @@
 			<button
 				type="button"
 				onclick={goBack}
-				class="inline-flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors duration-200 cursor-pointer"
+				class="inline-flex items-center gap-1.5 text-sm text-foreground transition-colors duration-200 cursor-pointer"
 			>
 				<ArrowLeft class="size-3.5" />
 				<span>Return to previous page</span>
