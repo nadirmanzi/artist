@@ -80,7 +80,7 @@
 </svelte:head>
 
 <div
-	class="relative min-h-dvh w-full overflow-hidden bg-[#0a0a0c] text-white flex items-center justify-center px-4 py-16 selection:bg-white selection:text-black"
+	class="relative min-h-dvh w-full overflow-hidden bg-background text-white flex items-center justify-center px-4 py-16 selection:bg-white selection:text-black"
 >
 	<!-- Dynamic Ambient Radial Background Glow -->
 	<div

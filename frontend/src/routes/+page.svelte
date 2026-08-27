@@ -13,6 +13,8 @@
 	import HeroImage3 from '$lib/assets/hero-3.jpeg';
 	import HeroImage2 from '$lib/assets/art-2.jpeg';
 	import CatalogCard from '$lib/components/catalog-card.svelte';
+	import EmptyState from '$lib/components/empty-state.svelte';
+	import Artboard from '@tabler/icons-svelte-runes/icons/artboard';
 
 	let { data }: { data: PageData } = $props();
 
@@ -308,7 +310,17 @@
 				{/each}
 			</div>
 		{:else}
-			<p class="py-12 text-center text-muted-foreground">No featured works available at present.</p>
+			<EmptyState
+				title="No Featured Works Available"
+				description="Our studio collection is currently being updated with new original pieces. Check back soon."
+				icon={Artboard}
+			>
+				{#snippet action()}
+					<Button href="/catalog" variant="outline" color="secondary" size="sm">
+						Browse Collection
+					</Button>
+				{/snippet}
+			</EmptyState>
 		{/if}
 	</div>
 </section>

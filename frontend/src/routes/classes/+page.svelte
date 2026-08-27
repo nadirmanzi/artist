@@ -9,6 +9,8 @@
 	import { animate } from '$lib/utils/animate';
 	import { gsap } from 'gsap';
 	import { formatPrice } from '$lib/utils';
+	import EmptyState from '$lib/components/empty-state.svelte';
+	import School from '@tabler/icons-svelte-runes/icons/school';
 
 	let { data }: { data: { classes: StudioClass[] } } = $props();
 
@@ -378,6 +380,19 @@
 					</Dialog.Root>
 				</div>
 			</div>
+		{:else}
+			<EmptyState
+				title="No Studio Classes Scheduled"
+				description="There are currently no active studio classes or workshops scheduled. Inquire directly for private masterclasses."
+				icon={School}
+				class="col-span-full"
+			>
+				{#snippet action()}
+					<Button href="/contacts" color="black" variant="outline" size="sm">
+						Contact Studio
+					</Button>
+				{/snippet}
+			</EmptyState>
 		{/each}
 	</div>
 </div>

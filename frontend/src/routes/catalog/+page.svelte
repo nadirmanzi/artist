@@ -10,6 +10,8 @@
 	import ArrowUpRight from '@tabler/icons-svelte-runes/icons/arrow-up-right';
 	import { formatPrice, getImageUrl } from '$lib/utils.js';
 	import CatalogCard from '$lib/components/catalog-card.svelte';
+	import EmptyState from '$lib/components/empty-state.svelte';
+	import Artboard from '@tabler/icons-svelte-runes/icons/artboard';
 
 	let { data } = $props();
 
@@ -64,27 +66,27 @@
 		{#each filteredCatalog as artwork, index (artwork.catalog_id ?? artwork.name)}
 			<CatalogCard {artwork} {index} />
 		{:else}
-			<div
-				class="col-span-full py-16 md:py-24 flex flex-col items-center justify-center text-center space-y-4 bg-surface rounded-3xl border border-surface-border px-6"
+			<EmptyState
+				title="No Artworks Found"
+				description={selectedCategory === 'All'
+					? 'There are currently no items available in the catalog. Check back soon for new additions.'
+					: `No pieces currently match the "${selectedCategory}" category.`}
+				icon={Artboard}
+				class="col-span-full"
 			>
-				<p class="font-display font-semibold text-2xl md:text-3xl">No artworks found</p>
-				<p class="text-surface-foreground-muted text-sm sm:text-base max-w-md">
-					{selectedCategory === 'All'
-						? 'There are currently no items available in the catalog. Check back soon for new additions.'
-						: `No pieces currently match the "${selectedCategory}" category.`}
-				</p>
-				{#if selectedCategory !== 'All'}
-					<Button
-						color="black"
-						variant="tonal"
-						size="sm"
-						class="mt-2"
-						onclick={() => (selectedCategory = 'All')}
-					>
-						View All Artworks
-					</Button>
-				{/if}
-			</div>
+				{#snippet action()}
+					{#if selectedCategory !== 'All'}
+						<Button
+							color="black"
+							variant="outline"
+							size="sm"
+							onclick={() => (selectedCategory = 'All')}
+						>
+							View All Artworks
+						</Button>
+					{/if}
+				{/snippet}
+			</EmptyState>
 		{/each}
 	</div>
 </div>

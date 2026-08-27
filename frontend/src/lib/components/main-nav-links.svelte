@@ -18,11 +18,7 @@
 </script>
 
 <div class="">
-	<AnimatedPillGroup
-		class="flex items-center space-x-0"
-		direction="horizontal"
-		color="var(--color-primary)"
-	>
+	<AnimatedPillGroup class="flex items-center space-x-0" direction="horizontal" color="white">
 		{#each navLinks as link (link.name)}
 			<AnimatedPillItem
 				active={activeLink(link)}
