@@ -54,11 +54,12 @@
 	const isBackendError = $derived(status >= 500);
 
 	const errorMessage = $derived(
-		is404
+		(is404
 			? 'The canvas or artwork you are looking for has left the frame, or has not been painted yet.'
-			: isBackendError
-				? 'The studio backend service is currently taking a pause or undergoing maintenance.'
-				: page.error?.message
+			: page.error?.message,
+		isBackendError
+			? 'The studio backend service is currently taking a pause or undergoing maintenance.'
+			: page.error?.message)
 	);
 
 	function reloadPage() {

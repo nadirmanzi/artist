@@ -124,7 +124,7 @@
 								<img
 									src={getImageUrl(artwork.image)}
 									alt={artwork.name}
-									class="w-full h-full object-contain"
+									class="w-full h-full object-cover"
 								/>
 							</div>
 						</div>
