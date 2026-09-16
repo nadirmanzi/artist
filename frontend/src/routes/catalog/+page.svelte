@@ -16,9 +16,10 @@
 	let { data } = $props();
 
 	const categories = $state([
-		{ name: 'All', href: '/catalog' },
-		{ name: 'Mixed Media', href: '/catalog/mixed-media' },
-		{ name: 'Landscapes', href: '/catalog/landscapes' }
+		{ name: 'All'  },
+		{ name: 'Landscapes' },
+		{ name: 'Portraits' },
+		{ name: 'Mixed Media' },
 	]);
 
 	let catalog = $derived(data.catalog ?? []);
