@@ -79,6 +79,7 @@ class CatalogSerializer(serializers.ModelSerializer):
     """
 
     user = EmbeddedUserSerializer(read_only=True)
+    category = serializers.CharField(source='get_category_display', read_only=True)
 
     class Meta:
         model = Catalog
