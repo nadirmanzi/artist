@@ -172,7 +172,7 @@
 												class="mt-6 sm:mt-8 tracking-wide flex items-center space-x-4 font-semibold"
 											>
 												<p class="">
-													{formatPrice({price: program.price, currency: "USD"})}
+													{formatPrice({price: program.price, currency: "RWF"})}
 												</p>
 												<p>/</p>
 												<p>{program.sessions} <span class="text-surface-foreground-muted">{program.sessions > 1 ? 'sessions' : 'session'}</span></p>
