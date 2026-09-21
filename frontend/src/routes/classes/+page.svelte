@@ -82,6 +82,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Book a class | Studio Mugire</title>
+</svelte:head>
+
 <PageBanner text="Learn to paint. Learn to see." image="/images/book-class.png" />
 
 <div class="bg-surface px-6 sm:px-12 lg:px-20 pt-16 md:pt-24 pb-6">
@@ -348,7 +352,7 @@
 																>{program.name}</span
 															>
 															<span class="font-mono text-xs sm:text-sm opacity-70"
-																>{formatPrice({price: program.price, currency: "USD"})}</span
+																>{formatPrice({price: program.price, currency: "RWF"})}</span
 															>
 														</label>
 													</div>

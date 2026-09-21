@@ -35,7 +35,7 @@
 </script>
 
 <svelte:head>
-	<title>Catalog</title>
+	<title>Browse the catalog | Studio Mugire</title>
 </svelte:head>
 
 <div class="h-[30dvh] bg-surface w-full flex flex-col justify-end px-6 sm:px-12 md:px-20">

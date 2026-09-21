@@ -23,6 +23,10 @@
 	);
 </script>
 
+<svelte:head>
+	<title>Contact us | Studio Mugire</title>
+</svelte:head>
+
 <PageBanner text="Let’s Begin a Conversation" image="/images/contact-banner.png" />
 
 <div
